@@ -1,4 +1,10 @@
-// TODO: background script
+import { setStoredCities, setStoredOpts } from '../utils/storage'
+
+// to set a default value after extension installed
 chrome.runtime.onInstalled.addListener(() => {
-  // TODO: on installed function
+  setStoredCities([])
+  setStoredOpts({
+    tempScale: 'metric',
+    homeCity: '',
+  })
 })
