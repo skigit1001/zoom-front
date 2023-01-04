@@ -9,7 +9,7 @@ import {
   setStoredOpts,
 } from '../utils/storage'
 
-import WeatherCard from '../WeatherCard'
+import WeatherCard from '../components/WeatherCard'
 
 import { Box, Grid, InputBase, IconButton, Paper } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
