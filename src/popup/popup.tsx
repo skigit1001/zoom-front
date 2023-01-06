@@ -12,9 +12,14 @@ import {
 import WeatherCard from '../components/WeatherCard'
 
 import { Box, Grid, InputBase, IconButton, Paper } from '@mui/material'
-import { Add as AddIcon } from '@mui/icons-material'
+import {
+  Add as AddIcon,
+  PictureInPicture as PiPIcon,
+} from '@mui/icons-material'
+
 import '@fontsource/roboto'
 import './popup.css'
+import { Messages } from '../utils/messages'
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = useState<string[]>([])
@@ -49,6 +54,18 @@ const App: React.FC<{}> = () => {
     setStoredOpts(updatedOptions).then(() => setOptions(updatedOptions))
   }
 
+  const handleOverlayToggle = () => {
+    chrome.tabs.query(
+      {
+        active: true,
+      },
+      tabs => {
+        if (tabs.length)
+          chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY)
+      }
+    )
+  }
+
   if (!options) return null
 
   return (
@@ -73,6 +90,15 @@ const App: React.FC<{}> = () => {
             <Box py="4px">
               <IconButton onClick={handleTempScaleToggle}>
                 {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item>
+          <Paper>
+            <Box py="4px">
+              <IconButton onClick={handleOverlayToggle}>
+                <PiPIcon />
               </IconButton>
             </Box>
           </Paper>

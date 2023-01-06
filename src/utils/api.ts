@@ -28,6 +28,8 @@ export const fetchOpenWeatherData = async (
   city: string,
   tempScale: OpenWeatherTempScale
 ): Promise<OpenWeatherData> => {
+  if (!city || !tempScale || !OPEN_WEATHER_API_KEY) return
+
   const res = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${tempScale}&appid=${OPEN_WEATHER_API_KEY}`
   )
@@ -38,3 +40,6 @@ export const fetchOpenWeatherData = async (
 
   return await res.json()
 }
+
+export const getWeatherIconSrc = (iconCode: string) =>
+  `https://openweathermap.org/img/wn/${iconCode}@2x.png`

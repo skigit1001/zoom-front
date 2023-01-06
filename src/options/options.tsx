@@ -26,7 +26,6 @@ type FormState = 'ready' | 'saving'
 const App: React.FC<{}> = () => {
   const [options, setOptions] = useState<LocalStorageOpts | null>(null)
   const [formState, setFormState] = useState<FormState>('ready')
-
   useEffect(() => {
     getStoredOpts().then(opts => setOptions(opts))
   }, [])

@@ -8,17 +8,29 @@ import Draggable from 'react-draggable'
 
 import './contentScript.css'
 import { getStoredOpts, LocalStorageOpts } from '../utils/storage'
+import { Messages } from '../utils/messages'
 
 const App: React.FC<{}> = () => {
   const [options, setOptions] = useState<LocalStorageOpts | null>(null)
   const [isActive, setIsActive] = useState<boolean>(false)
 
   useEffect(() => {
+    getStoredOpts().then(opts => setIsActive(opts.hasAutoOverlay))
+  }, [])
+
+  useEffect(() => {
     getStoredOpts().then(opts => {
       setOptions(opts)
-      setIsActive(opts.hasAutoOverlay)
     })
-  }, [])
+
+    const handleMessage = (msg: Messages) => {
+      if (msg === Messages.TOGGLE_OVERLAY) setIsActive(!isActive)
+    }
+
+    chrome.runtime.onMessage.addListener(handleMessage)
+
+    return () => chrome.runtime.onMessage.removeListener(handleMessage)
+  }, [isActive])
 
   if (!options) return null
 

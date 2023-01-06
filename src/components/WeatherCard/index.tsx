@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react'
+
+import {
+  fetchOpenWeatherData,
+  getWeatherIconSrc,
+  OpenWeatherData,
+  OpenWeatherTempScale,
+} from '../../utils/api'
+
 import {
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
+  Grid,
   Typography,
 } from '@mui/material'
-import {
-  fetchOpenWeatherData,
-  OpenWeatherData,
-  OpenWeatherTempScale,
-} from '../../utils/api'
+
+import './WeatherCard.css'
 
 const WeatherCardContainer: React.FC<{
   children: React.ReactNode
   onDelete?: () => void
 }> = ({ children, onDelete }) => {
   return (
-    <Box mx="4px" my="16px">
+    <Box className="weather-card" mx="4px" my="16px">
       <Card>
         <CardContent>{children}</CardContent>
         <CardActions>
@@ -55,6 +61,7 @@ const WeatherCard: React.FC<{
   if (cardState === 'loading' || cardState === 'error')
     return (
       <WeatherCardContainer onDelete={onDelete}>
+        <Typography>{city}</Typography>
         <Typography variant="body1">
           {cardState === 'loading'
             ? 'Loading...'
@@ -65,13 +72,35 @@ const WeatherCard: React.FC<{
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography variant="h5">{weatherData.name}</Typography>
-      <Typography variant="body1">
-        {Math.round(weatherData.main.temp)}
-      </Typography>
-      <Typography variant="body1">
-        Feels like: {Math.round(weatherData.main.feels_like)}
-      </Typography>
+      <Grid container justifyContent="space-around" alignItems="end">
+        <Grid item>
+          <Typography textAlign="center" variant="h5">
+            {weatherData.name}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '64px',
+              textAlign: 'center',
+            }}
+            variant="body1"
+          >
+            {Math.round(weatherData.main.temp)}
+          </Typography>
+          <Typography textAlign="center" variant="body1">
+            Feels like: {Math.round(weatherData.main.feels_like)}
+          </Typography>
+        </Grid>
+        <Grid item>
+          {weatherData.weather.length > 0 && (
+            <>
+              <img src={getWeatherIconSrc(weatherData.weather[0].icon)} />
+              <Typography textAlign="center" variant="body1">
+                {weatherData.weather[0].main}
+              </Typography>
+            </>
+          )}
+        </Grid>
+      </Grid>
     </WeatherCardContainer>
   )
 }
