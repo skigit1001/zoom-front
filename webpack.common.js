@@ -1,7 +1,8 @@
 const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
-const HtmlPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -29,6 +30,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [new TsconfigPathsPlugin()],
   },
   plugins: [
     new CleanWebpackPlugin({
@@ -37,7 +39,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve('src/static'),
+          from: path.resolve('static'),
           to: path.resolve('dist'),
         },
       ],
@@ -60,7 +62,7 @@ module.exports = {
 function getHtmlPlugins(chunks) {
   return chunks.map(
     chunk =>
-      new HtmlPlugin({
+      new HtmlWebpackPlugin({
         title: 'React Extension',
         filename: `${chunk}.html`,
         chunks: [chunk],

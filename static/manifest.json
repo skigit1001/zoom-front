@@ -1,6 +1,6 @@
 {
-  "name": "Weather Extension",
-  "description": "Weather Extension in React!",
+  "name": "Proxy Extension",
+  "description": "Proxy Extension",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "React Extension",
+    "default_title": "Proxy Settings",
     "default_icon": "icon.png"
   },
   "permissions": ["storage", "contextMenus", "alarms"],
