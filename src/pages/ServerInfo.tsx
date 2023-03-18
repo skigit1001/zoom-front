@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -11,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LINKS from '@/utils/constants/links';
 
-export default function SignIn() {
+export default function ServerInfo() {
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,32 +34,17 @@ export default function SignIn() {
           <img src="/logo.png" width={150} />
         </Box>
         <Typography component="h1" variant="h5">
-          Sign in
+          Welcome
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="server-addr"
+            label="Server Address"
+            name="server-addr"
             autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"
@@ -69,20 +52,11 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Save
           </Button>
-          <Grid container>
-            <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.forgotPassword)}>
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.signUp)}>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Link href="#" variant="body2" onClick={() => navigate(LINKS.signIn)}>
+            Already have a correct info? Sign in
+          </Link>
         </Box>
       </Box>
     </Container>

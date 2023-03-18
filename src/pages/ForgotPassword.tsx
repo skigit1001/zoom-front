@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LINKS from '@/utils/constants/links';
 
-export default function SignIn() {
+export default function ForgotPassword() {
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +36,7 @@ export default function SignIn() {
           <img src="/logo.png" width={150} />
         </Box>
         <Typography component="h1" variant="h5">
-          Sign in
+          Reset Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -49,40 +49,14 @@ export default function SignIn() {
             autoComplete="email"
             autoFocus
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Send reset email
           </Button>
-          <Grid container>
-            <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.forgotPassword)}>
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.signUp)}>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>
