@@ -1,3 +1,3 @@
 export enum Messages {
-  TOGGLE_OVERLAY,
+  NEW_MESSAGE,
 }

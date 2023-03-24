@@ -1,50 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
-import WeatherCard from '../components/WeatherCard'
-import { Card } from '@mui/material'
+import { Messages } from "@/utils/constants/enums";
 
-import { getStoredOpts, LocalStorageOpts } from '../utils/storage'
-import { Messages } from '../utils/messages'
-
-const App: React.FC<{}> = () => {
-  const [options, setOptions] = useState<LocalStorageOpts | null>(null)
-  const [isActive, setIsActive] = useState<boolean>(false)
-
-  useEffect(() => {
-    getStoredOpts().then(opts => setIsActive(opts.hasAutoOverlay))
-  }, [])
-
-  useEffect(() => {
-    getStoredOpts().then(opts => {
-      setOptions(opts)
-    })
-
-    const handleMessage = (msg: Messages) => {
-      if (msg === Messages.TOGGLE_OVERLAY) setIsActive(!isActive)
+const observer = new MutationObserver(mutations => {
+  for (let mutation of mutations) {
+    for (let addedNode of mutation.addedNodes) {
+      const data = traverseNode(addedNode);
+      if (data.message) {
+        chrome.runtime.sendMessage({
+          type: Messages.NEW_MESSAGE,
+          data: data
+        });
+      }
     }
+  }
+});
 
-    chrome.runtime.onMessage.addListener(handleMessage)
+function traverseNode(node: Node, data?: ChatMessage) {
+  let updated = { ...data };
+  const element = node as HTMLElement;
+  const classes = Array.from(element.classList ?? []);
+  if (classes.includes('new-chat-message__container')) {
+    updated.order = Number(element.id.split('chat-message-content-')[1]);
+  } else if (classes.includes('new-chat-message__text-box')) {
+    updated.message = element.textContent;
+    updated.id = element.id;
+  } else if (classes.includes('chat-item__sender')) {
+    updated.sender = element.textContent;
+  } else if (classes.includes('chat-item__receiver')) {
+    updated.receiver = element.textContent;
+  } else if (classes.includes('chat-privately')) {
+    updated.private = true;
+  }
+  node.childNodes.forEach(child => {
+    updated = {
+      ...traverseNode(child, updated)
+    };
+  });
+  return updated;
+};
 
-    return () => chrome.runtime.onMessage.removeListener(handleMessage)
-  }, [isActive])
-
-  if (!options) return null
-
-  return (
-    <>
-      {isActive && (
-        <Card className="overlay-card">
-          <WeatherCard
-            city={options.homeCity}
-            tempScale={options.tempScale}
-            onDelete={() => setIsActive(false)}
-          />
-        </Card>
-      )}
-    </>
-  )
-}
-
-const root = document.createElement('div')
-document.body.appendChild(root)
-ReactDOM.render(<App />, root)
+observer.observe(document, { childList: true, subtree: true });

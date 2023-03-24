@@ -13,14 +13,14 @@
     "default_title": "Proxy Settings",
     "default_icon": "icon.png"
   },
-  "permissions": ["storage", "contextMenus", "alarms"],
+  "permissions": ["storage", "contextMenus", "notifications", "scripting"],
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://*.zoom.us/*"],
       "js": ["contentScript.js"]
     }
   ]
