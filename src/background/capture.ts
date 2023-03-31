@@ -443,7 +443,6 @@ function getDeviceId() {
       }
     });
     chrome.runtime.sendMessage({ type: "audio-done", devices: audiodevices });
-    console.log(audiodevices);
   });
 }
 
