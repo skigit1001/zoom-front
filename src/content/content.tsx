@@ -1,4 +1,5 @@
-import { Messages } from "@/utils/constants/enums";
+import { ZoomRTMessages } from "@/utils/enums/ZoomRTMessages";
+import { ZoomChatMessage } from "@/utils/interfaces/zoom/ZoomChatMessage";
 
 const observer = new MutationObserver(mutations => {
   for (let mutation of mutations) {
@@ -6,7 +7,7 @@ const observer = new MutationObserver(mutations => {
       const data = traverseNode(addedNode);
       if (data.message) {
         chrome.runtime.sendMessage({
-          type: Messages.NEW_MESSAGE,
+          type: ZoomRTMessages.NewMessage,
           data: data
         });
       }
@@ -14,7 +15,7 @@ const observer = new MutationObserver(mutations => {
   }
 });
 
-function traverseNode(node: Node, data?: ChatMessage) {
+function traverseNode(node: Node, data?: ZoomChatMessage) {
   let updated = { ...data };
   const element = node as HTMLElement;
   const classes = Array.from(element.classList ?? []);

@@ -1,4 +1,4 @@
-type ChatMessage = {
+export interface ZoomChatMessage {
   id: string,
   message: string,
   order: number,

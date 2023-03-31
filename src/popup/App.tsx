@@ -6,9 +6,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
-import LINKS from '@/utils/constants/links';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ServerInfo from '@/pages/ServerInfo';
+import { ZoomPages } from '@/utils/enums/ZoomPages';
 
 const theme = createTheme();
 
@@ -17,12 +17,12 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box width={350} px={2} py={4}>
-        <MemoryRouter initialEntries={[LINKS.serverInfo]}>
+        <MemoryRouter initialEntries={[ZoomPages.serverInfo]}>
           <Routes>
-            <Route path={LINKS.serverInfo} Component={ServerInfo} />
-            <Route path={LINKS.signIn} Component={SignIn} />
-            <Route path={LINKS.signUp} Component={SignUp} />
-            <Route path={LINKS.forgotPassword} Component={ForgotPassword} />
+            <Route path={ZoomPages.serverInfo} Component={ServerInfo} />
+            <Route path={ZoomPages.signIn} Component={SignIn} />
+            <Route path={ZoomPages.signUp} Component={SignUp} />
+            <Route path={ZoomPages.forgotPassword} Component={ForgotPassword} />
           </Routes>
         </MemoryRouter>
       </Box>
