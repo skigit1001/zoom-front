@@ -221,7 +221,7 @@ function getTab() {
         transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))
       })
       const writer = writable.getWriter()
-      readable.pipeTo(streamSaver.createWriteStream('screenity.webm'));
+      readable.pipeTo(streamSaver.createWriteStream('recording.webm'));
 
       // Record tab stream
       var recordedBlobs = [];
