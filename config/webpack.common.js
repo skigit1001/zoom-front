@@ -9,7 +9,10 @@ module.exports = {
     popup: path.resolve('src/popup/popup.tsx'),
     options: path.resolve('src/options/options.tsx'),
     background: path.resolve('src/background/background.ts'),
-    content: path.resolve('src/content/content.tsx')
+    content: path.resolve('src/content/content.ts'),
+    detect: path.resolve('src/content/detect.ts'),
+    sources: path.resolve('src/content/sources.ts'),
+    audiosources: path.resolve('src/content/audiosources.ts')
   },
   module: {
     rules: [
@@ -44,7 +47,7 @@ module.exports = {
         },
       ],
     }),
-    ...getHtmlPlugins(['popup', 'options']),
+    ...getHtmlPlugins(['popup', 'options', 'sources', 'audiosources']),
   ],
   output: {
     filename: '[name].js',

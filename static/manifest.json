@@ -2,42 +2,78 @@
   "name": "EasyMind",
   "description": "EasyMind Monitoring Toolkit",
   "version": "1.0.0",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
     "128": "icon.png"
   },
-  "action": {
+  "browser_action": {
     "default_popup": "popup.html",
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
   "permissions": [
+    "<all_urls>",
     "storage",
-    "scripting",
     "activeTab",
     "tabCapture",
     "tabs",
     "downloads",
     "downloads.shelf"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
   "options_page": "options.html",
   "background": {
-    "service_worker": "background.js"
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
   },
   "content_scripts": [
     {
       "matches": [
-        "https://*.zoom.us/*",
         "<all_urls>"
       ],
       "js": [
         "content.js"
       ]
     }
-  ]
+  ],
+  "web_accessible_resources": [
+    "content.js",
+    "sources.js",
+    "sources.html",
+    "audiosources.js",
+    "audiosources.html"
+  ],
+  "commands": {
+    "cancel": {
+      "suggested_key": {
+        "default": "Alt+C",
+        "mac": "Alt+C"
+      },
+      "description": "__MSG_extCancel__"
+    },
+    "mute/unmute": {
+      "suggested_key": {
+        "default": "Alt+M",
+        "mac": "Alt+M"
+      },
+      "description": "__MSG_extMute__"
+    },
+    "stop": {
+      "suggested_key": {
+        "default": "Alt+S",
+        "mac": "Alt+S"
+      },
+      "description": "__MSG_extStop__"
+    },
+    "pause/resume": {
+      "suggested_key": {
+        "default": "Alt+P",
+        "mac": "Alt+P"
+      },
+      "description": "__MSG_extPause__"
+    }
+  }
 }
