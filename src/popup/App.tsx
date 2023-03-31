@@ -8,7 +8,7 @@ import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ServerInfo from '@/pages/ServerInfo';
-import { ZoomPages } from '@/utils/enums/ZoomPages';
+import ZoomPages from '@/utils/enums/ZomPages';
 
 const theme = createTheme();
 

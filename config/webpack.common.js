@@ -9,7 +9,7 @@ module.exports = {
     popup: path.resolve('src/popup/popup.tsx'),
     options: path.resolve('src/options/options.tsx'),
     background: path.resolve('src/background/background.ts'),
-    content: path.resolve('src/content/content.tsx'),
+    content: path.resolve('src/content/content.tsx')
   },
   module: {
     rules: [
@@ -63,7 +63,6 @@ function getHtmlPlugins(chunks) {
   return chunks.map(
     chunk =>
       new HtmlWebpackPlugin({
-        title: 'React Extension',
         filename: `${chunk}.html`,
         chunks: [chunk],
       })

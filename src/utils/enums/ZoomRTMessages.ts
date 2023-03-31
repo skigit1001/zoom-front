@@ -1,3 +1,5 @@
-export enum ZoomRTMessages {
+enum ZoomRTMessages {
   NewMessage,
 }
+
+export default ZoomRTMessages;

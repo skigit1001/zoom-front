@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import LINKS from '@/utils/constants/links';
+import ZoomPages from '@/utils/enums/ZomPages';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -73,12 +73,12 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.forgotPassword)}>
+              <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.forgotPassword)}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item xs={12}>
-              <Link href="#" variant="body2" onClick={() => navigate(LINKS.signUp)}>
+              <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.signUp)}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

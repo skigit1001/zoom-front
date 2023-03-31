@@ -13,15 +13,31 @@
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
-  "permissions": ["storage", "contextMenus", "scripting"],
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "tabCapture",
+    "tabs",
+    "downloads",
+    "downloads.shelf"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["https://*.zoom.us/*"],
-      "js": ["content.js"]
+      "matches": [
+        "https://*.zoom.us/*",
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ]
 }

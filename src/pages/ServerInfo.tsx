@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import LINKS from '@/utils/constants/links';
+import ZoomPages from '@/utils/enums/ZomPages';
 
 export default function ServerInfo() {
   const navigate = useNavigate();
@@ -54,7 +53,7 @@ export default function ServerInfo() {
           >
             Save
           </Button>
-          <Link href="#" variant="body2" onClick={() => navigate(LINKS.signIn)}>
+          <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.signIn)}>
             Already have a correct info? Sign in
           </Link>
         </Box>

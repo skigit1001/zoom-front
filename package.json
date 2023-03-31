@@ -1,12 +1,13 @@
 {
-  "name": "chrome-proxy-extension",
+  "name": "easymind",
   "version": "1.0.0",
-  "description": "chrome proxy extenstion",
+  "description": "easymind chrome extension",
   "scripts": {
-    "start": "webpack --watch --progress --config webpack.dev.js",
-    "build": "webpack --watch --progress --config webpack.prod.js"
+    "start": "webpack --watch --progress --config config/webpack.dev.js",
+    "build": "webpack --watch --progress --config config/webpack.prod.js"
   },
-  "author": "devofficer",
+  "author": "609",
+  "license": "MIT",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",

@@ -1,5 +1,5 @@
-import { ZoomRTMessages } from "@/utils/enums/ZoomRTMessages";
-import { ZoomChatMessage } from "@/utils/interfaces/ZoomChatMessage";
+import ZoomRTMessages from "@/utils/enums/ZoomRTMessages";
+import ZoomChatMessage from "@/utils/interfaces/ZoomChatMessage";
 
 const observer = new MutationObserver(mutations => {
   for (let mutation of mutations) {
