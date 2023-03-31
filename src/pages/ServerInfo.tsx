@@ -20,35 +20,6 @@ export default function ServerInfo() {
     });
   };
 
-  const handleClick = () => {
-    chrome.tabs.query({ active: true }, function (tabs) {
-      console.log(tabs);
-      chrome.tabs.sendMessage(tabs[0].id, {
-        type: "camera-request"
-      });
-    });
-
-    // Check if recording is ongoing
-    chrome.runtime.sendMessage({ type: "record-request" }, function (response) {
-      console.log(response);
-    });
-
-    // Check if current tab is unable to be recorded
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-      if (tabs.length && tabs[0].url.includes("chrome://") || tabs[0].url.includes("chrome-extension://") || tabs[0].url.includes("chrome.com") || tabs[0].url.includes("chrome.google.com")) {
-        alert('cannot record');
-      }
-    });
-  }
-
-  const handleRecord = () => {
-    chrome.runtime.sendMessage({ type: "record" });
-  };
-
-  const handleStopRecord = () => {
-    chrome.runtime.sendMessage({ type: "stop-save" });
-  }
-
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -79,27 +50,8 @@ export default function ServerInfo() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={handleClick}
           >
             Save
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleRecord}
-          >
-            Record
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleStopRecord}
-          >
-            Stop Record
           </Button>
           <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.signIn)}>
             Already have a correct info? Sign in
