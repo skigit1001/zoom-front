@@ -20,14 +20,16 @@
     "tabCapture",
     "tabs",
     "downloads",
-    "downloads.shelf"
+    "downloads.shelf",
+    "webRequest",
+    "webRequestBlocking"
   ],
   "options_page": "options.html",
   "background": {
     "scripts": [
       "background.js"
     ],
-    "persistent": false
+    "persistent": true
   },
   "content_scripts": [
     {

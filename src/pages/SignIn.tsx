@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import ZoomPages from '@/utils/enums/ZomPages';
+import { ZoomPages } from '@/utils/enums/zoom';
 
 export default function SignIn() {
   const navigate = useNavigate();

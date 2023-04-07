@@ -1,4 +1,4 @@
-enum ZoomPages {
+export enum ZoomPages {
   home = '/home',
   record = '/record',
   signIn = '/sign-in',
@@ -7,4 +7,12 @@ enum ZoomPages {
   serverInfo = '/server-info'
 };
 
-export default ZoomPages;
+export enum ZoomRTMessages {
+  NewMessage,
+}
+
+export enum ZoomChatType {
+  Message = 'message',
+  File = 'file',
+  Image = 'image'
+}

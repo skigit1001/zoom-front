@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import ZoomPages from '@/utils/enums/ZomPages';
+import { ZoomPages } from '@/utils/enums/zoom';
 import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
 import ForgotPassword from '@/pages/ForgotPassword';
