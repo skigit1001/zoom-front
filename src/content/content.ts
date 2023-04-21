@@ -1,4 +1,6 @@
-import { ZoomChatType, ZoomRTMessages } from "@/utils/enums/zoom";
+import { CustomEvents } from "@/utils/enums/CustomEvents";
+import { RTMessages } from "@/utils/enums/RTMessages";
+import { ZoomChatType } from "@/utils/enums/zoom";
 import { blobUrlToBase64 } from "@/utils/helpers/convert";
 import { ZoomChat } from "@/utils/interfaces/zoom";
 
@@ -8,7 +10,7 @@ const observer = new MutationObserver(async (mutations) => {
       const data = await traverseNode(addedNode);
       if (data.id) {
         chrome.runtime.sendMessage({
-          type: ZoomRTMessages.NewMessage,
+          type: RTMessages.ZoomNewMessage,
           data: data
         });
       }
@@ -52,3 +54,9 @@ async function traverseNode(node: Node, data?: ZoomChat) {
 };
 
 observer.observe(document, { childList: true, subtree: true });
+
+window.addEventListener(CustomEvents.WebSocketSniffer, (event: CustomEvent) => {
+  if (event.detail?.type) {
+    chrome.runtime.sendMessage(event.detail);
+  }
+});

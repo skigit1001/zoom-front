@@ -7,10 +7,6 @@ export enum ZoomPages {
   serverInfo = '/server-info'
 };
 
-export enum ZoomRTMessages {
-  NewMessage,
-}
-
 export enum ZoomChatType {
   Message = 'message',
   File = 'file',

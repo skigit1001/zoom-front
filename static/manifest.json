@@ -2,53 +2,52 @@
   "name": "EasyMind",
   "description": "EasyMind Monitoring Toolkit",
   "version": "1.0.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
     "128": "icon.png"
   },
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
-    "<all_urls>",
     "storage",
     "activeTab",
     "tabCapture",
     "tabs",
     "downloads",
     "downloads.shelf",
-    "webRequest",
-    "webRequestBlocking"
+    "webRequest"
   ],
   "options_page": "options.html",
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": true
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js", "socketSniffer.js"
-      ],
-      "run_at": "document_idle",
+      "matches": ["https://*.zoom.us/*"],
+      "js": ["content.js"],
+      "world": "ISOLATED"
+    },
+    {
+      "matches": ["https://*.zoom.us/*"],
+      "js": ["socketSniffer.js"],
       "world": "MAIN"
     }
   ],
   "web_accessible_resources": [
-    "content.js",
-    "videoSources.js",
-    "videoSources.html",
-    "audioSources.js",
-    "audioSources.html"
+    {
+      "resources": [
+        "content.js",
+        "videoSources.js",
+        "videoSources.html",
+        "audioSources.js",
+        "audioSources.html"
+      ],
+      "matches": ["<all_urls>"]
+    }
   ]
 }

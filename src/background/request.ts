@@ -5,8 +5,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
       [header.name]: header.value
     }), {});
     console.log(headers);
-    return { cancel: true };
   },
   { urls: ["https://us04file.zoom.us/zoomfile/download*"] },
-  ["blocking", "requestHeaders"]
+  ["requestHeaders"]
 );
