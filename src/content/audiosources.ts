@@ -4,7 +4,7 @@ function getAudioSources() {
     const audiodevices = [];
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
       devices.forEach(function (device) {
-        if (device.kind == "audioinput") {
+        if (device.kind === "audioinput") {
           audiodevices.push({ label: device.label, id: device.deviceId });
         }
       });

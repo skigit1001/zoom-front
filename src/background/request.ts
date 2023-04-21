@@ -1,9 +1,10 @@
-import { sleep } from "@/utils/helpers/process";
-
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function (details) {
-    console.log(details);
-    sleep(50000);
+    const headers = details.requestHeaders.reduce((acc, header) => ({
+      ...acc,
+      [header.name]: header.value
+    }), {});
+    console.log(headers);
     return { cancel: true };
   },
   { urls: ["https://us04file.zoom.us/zoomfile/download*"] },

@@ -48,8 +48,8 @@ chrome.runtime.onInstalled.addListener(function () {
     tabs.forEach(tab => {
       if (!tab.url.includes("chrome://") && !tab.url.includes("chrome.com")) {
         chrome.tabs.executeScript(tab.id, {
-          file: './detect.js'
-        })
+          file: './detectMedia.js'
+        });
       }
     })
   });
@@ -544,31 +544,6 @@ chrome.tabs.onRemoved.addListener(function (tabid, removed) {
     tabid = 0;
   }
 })
-
-// Keyboard shortcuts
-chrome.commands.onCommand.addListener(function (command) {
-  if (recording) {
-    if (command == "stop") {
-      stopRecording(command);
-    } else if (command == "pause/resume") {
-      chrome.tabs.query({ active: true }, function (tabs) {
-        const tab = tabs[0];
-        chrome.tabs.sendMessage(tab.id, {
-          type: "pause/resume"
-        });
-      });
-    } else if (command == "cancel") {
-      stopRecording(command);
-    } else if (command == "mute/unmute") {
-      chrome.tabs.query({ active: true }, function (tabs) {
-        const tab = tabs[0];
-        chrome.tabs.sendMessage(tab.id, {
-          type: "mute/unmute"
-        });
-      });
-    }
-  }
-});
 
 // Listen for messages from content / popup
 chrome.runtime.onMessage.addListener(

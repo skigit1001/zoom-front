@@ -13,6 +13,7 @@
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "<all_urls>",
     "storage",
@@ -37,45 +38,17 @@
         "<all_urls>"
       ],
       "js": [
-        "content.js"
-      ]
+        "content.js", "socketSniffer.js"
+      ],
+      "run_at": "document_idle",
+      "world": "MAIN"
     }
   ],
   "web_accessible_resources": [
     "content.js",
-    "sources.js",
-    "sources.html",
-    "audiosources.js",
-    "audiosources.html"
-  ],
-  "commands": {
-    "cancel": {
-      "suggested_key": {
-        "default": "Alt+C",
-        "mac": "Alt+C"
-      },
-      "description": "__MSG_extCancel__"
-    },
-    "mute/unmute": {
-      "suggested_key": {
-        "default": "Alt+M",
-        "mac": "Alt+M"
-      },
-      "description": "__MSG_extMute__"
-    },
-    "stop": {
-      "suggested_key": {
-        "default": "Alt+S",
-        "mac": "Alt+S"
-      },
-      "description": "__MSG_extStop__"
-    },
-    "pause/resume": {
-      "suggested_key": {
-        "default": "Alt+P",
-        "mac": "Alt+P"
-      },
-      "description": "__MSG_extPause__"
-    }
-  }
+    "videoSources.js",
+    "videoSources.html",
+    "audioSources.js",
+    "audioSources.html"
+  ]
 }
