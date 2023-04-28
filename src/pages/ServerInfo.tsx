@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -7,15 +7,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
+import { useChromeStorageSync } from 'use-chrome-storage';
+import { StorageItems } from '@/utils/enums/StorageItems';
 
 export default function ServerInfo() {
   const navigate = useNavigate();
+  const [serverAddr, setServerAddr] = useChromeStorageSync(StorageItems.ServerAddr, '');
+  const [addr, setAddr] = useState(serverAddr);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-  };
+  useEffect(() => setAddr(serverAddr), [serverAddr]);
+  
+  const handleChangeServerAddr = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddr(e.target.value);
+  }, []);
+
+  const handleSaveServerInfo = useCallback(() => {
+    setServerAddr(addr);
+  }, [addr]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -32,7 +40,7 @@ export default function ServerInfo() {
         <Typography component="h1" variant="h5">
           Welcome
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -40,13 +48,15 @@ export default function ServerInfo() {
             id="server-addr"
             label="Server Address"
             name="server-addr"
+            value={addr}
+            onChange={handleChangeServerAddr}
             autoFocus
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSaveServerInfo}
           >
             Save
           </Button>
