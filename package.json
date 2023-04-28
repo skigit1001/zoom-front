@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "easymind chrome extension",
   "scripts": {
-    "start": "webpack --watch --progress --config config/webpack.dev.js",
+    "dev": "webpack --watch --progress --config config/webpack.dev.js",
     "build": "webpack --progress --config config/webpack.prod.js"
   },
   "author": "609",

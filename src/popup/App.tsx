@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { ZoomPages } from '@/utils/enums/zoom';
+import { PopupPages } from '@/utils/enums/PopupPages';
 import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
 import ForgotPassword from '@/pages/ForgotPassword';
@@ -18,13 +18,13 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box width={350} px={2} py={4}>
-        <MemoryRouter initialEntries={[ZoomPages.record]}>
+        <MemoryRouter initialEntries={[PopupPages.serverInfo]}>
           <Routes>
-            <Route path={ZoomPages.record} Component={Record} />
-            <Route path={ZoomPages.serverInfo} Component={ServerInfo} />
-            <Route path={ZoomPages.signIn} Component={SignIn} />
-            <Route path={ZoomPages.signUp} Component={SignUp} />
-            <Route path={ZoomPages.forgotPassword} Component={ForgotPassword} />
+            <Route path={PopupPages.record} Component={Record} />
+            <Route path={PopupPages.serverInfo} Component={ServerInfo} />
+            <Route path={PopupPages.signIn} Component={SignIn} />
+            <Route path={PopupPages.signUp} Component={SignUp} />
+            <Route path={PopupPages.forgotPassword} Component={ForgotPassword} />
           </Routes>
         </MemoryRouter>
       </Box>

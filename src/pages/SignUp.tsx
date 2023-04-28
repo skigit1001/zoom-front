@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { ZoomPages } from '@/utils/enums/zoom';
+import { PopupPages } from '@/utils/enums/PopupPages';
 
 
 export default function SignUp() {
@@ -89,7 +89,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.signIn)}>
+              <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
                 Already have an account? Sign in
               </Link>
             </Grid>

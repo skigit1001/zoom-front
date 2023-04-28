@@ -1,4 +1,4 @@
-import { ZoomChatType } from "../enums/zoom";
+import { ZoomChatTypes } from "../enums/zoom";
 
 export interface ZoomChatMessage {
   id: string,
@@ -19,5 +19,5 @@ export interface ZoomChatFile {
 }
 
 export type ZoomChat = ZoomChatMessage & ZoomChatFile & {
-  type: ZoomChatType
+  type: ZoomChatTypes
 };

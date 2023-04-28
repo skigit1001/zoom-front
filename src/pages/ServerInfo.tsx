@@ -6,7 +6,7 @@ import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { ZoomPages } from '@/utils/enums/zoom';
+import { PopupPages } from '@/utils/enums/PopupPages';
 
 export default function ServerInfo() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function ServerInfo() {
           >
             Save
           </Button>
-          <Link href="#" variant="body2" onClick={() => navigate(ZoomPages.signIn)}>
+          <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
             Already have a correct info? Sign in
           </Link>
         </Box>
