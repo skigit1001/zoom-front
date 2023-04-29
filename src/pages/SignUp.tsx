@@ -8,16 +8,41 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
+import useAPI from '@/hooks/useAPI';
+import { useChromeStorageLocal } from 'use-chrome-storage';
+import { StorageItems } from '@/utils/enums/StorageItems';
 
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const authAPI = useAPI('auth');
+  const [, setAuthToken] = useChromeStorageLocal(StorageItems.AuthToken);
+  const [, setUserInfo] = useChromeStorageLocal(StorageItems.UserInfo);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-  };
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'admin'
+  });
+
+  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(data => ({
+      ...data,
+      [e.target.name]: e.target.value
+    }));
+  }, []);
+
+  const handleSubmit = React.useCallback(async () => {
+    try {
+      const { data } = await authAPI.post('/signup', formData);
+      setAuthToken(data.toke);
+      setUserInfo(data.user);
+      navigate(PopupPages.signIn);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [formData, authAPI]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -34,37 +59,26 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
+                label="Username"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -74,16 +88,16 @@ export default function SignUp() {
                 name="password"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="new-password"
+                value={formData.password}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
           >
             Sign Up
           </Button>
