@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
 import useAPI from '@/hooks/useAPI';
-import { useChromeStorageLocal } from 'use-chrome-storage';
 import { StorageItems } from '@/utils/enums/StorageItems';
+import { useStorage } from '@/hooks/useStorage';
 
 enum SignInItems {
   Email = 'email',
@@ -22,8 +22,8 @@ enum SignInItems {
 export default function SignIn() {
   const navigate = useNavigate();
   const authAPI = useAPI('auth');
-  const [, setAuthToken] = useChromeStorageLocal(StorageItems.AuthToken);
-  const [, setUserInfo] = useChromeStorageLocal(StorageItems.UserInfo);
+  const [, setAuthToken] = useStorage(StorageItems.AuthToken);
+  const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
   const [formData, setFormData] = React.useState({
     [SignInItems.Email]: '',
@@ -40,9 +40,9 @@ export default function SignIn() {
   const handleSubmit = React.useCallback(async () => {
     try {
       const { data } = await authAPI.post('/signin', formData);
-      setAuthToken(data.toke);
+      console.log(data.token)
+      setAuthToken(data.token);
       setUserInfo(data.user);
-      navigate(PopupPages.record);
     } catch (err) {
       console.error(err);
     }

@@ -9,8 +9,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
 import useAPI from '@/hooks/useAPI';
-import { useChromeStorageLocal } from 'use-chrome-storage';
 import { StorageItems } from '@/utils/enums/StorageItems';
+import { useStorage } from '@/hooks/useStorage';
 
 enum SignUpItems {
   Username = 'name',
@@ -22,8 +22,8 @@ enum SignUpItems {
 export default function SignUp() {
   const navigate = useNavigate();
   const authAPI = useAPI('auth');
-  const [, setAuthToken] = useChromeStorageLocal(StorageItems.AuthToken);
-  const [, setUserInfo] = useChromeStorageLocal(StorageItems.UserInfo);
+  const [, setAuthToken] = useStorage(StorageItems.AuthToken);
+  const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
   const [formData, setFormData] = React.useState({
     [SignUpItems.Username]: '',
