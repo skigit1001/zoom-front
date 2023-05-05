@@ -9,11 +9,10 @@ export default function useAPI(route?: string) {
 
   const axiosInstance = useMemo(() => {
     if (serverAddr) {
-      console.log(authToken);
       const axInst: AxiosInstance = axios.create({
         baseURL: `${serverAddr}/api/${route}`,
         headers: {
-          Authorization: `Bearer ${authToken}`
+          Authorization: authToken
         },
       });
       axInst.interceptors.response.use((value) => value.data);

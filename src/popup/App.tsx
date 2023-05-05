@@ -21,7 +21,7 @@ export default function App() {
 
   useEffect(() => {
     if (authenticated) {
-      navigate(PopupPages.record);
+      navigate(PopupPages.home);
     } else if (initialized) {
       navigate(PopupPages.signIn);
     }
@@ -32,7 +32,7 @@ export default function App() {
       <CssBaseline />
       <Box width={350} px={2} py={4}>
         <Routes>
-          <Route path={PopupPages.record} Component={Record} />
+          <Route path={PopupPages.home} Component={Record} />
           <Route path={PopupPages.serverInfo} Component={ServerInfo} />
           <Route path={PopupPages.signIn} Component={SignIn} />
           <Route path={PopupPages.signUp} Component={SignUp} />

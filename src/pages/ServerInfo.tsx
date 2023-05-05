@@ -7,12 +7,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
-import { useChromeStorageSync } from 'use-chrome-storage';
 import { StorageItems } from '@/utils/enums/StorageItems';
+import { useStorage } from '@/hooks/useStorage';
 
 export default function ServerInfo() {
   const navigate = useNavigate();
-  const [serverAddr, setServerAddr] = useChromeStorageSync(StorageItems.ServerAddr, '');
+  const [serverAddr, setServerAddr] = useStorage(StorageItems.ServerAddr, '');
   const [addr, setAddr] = useState(serverAddr);
 
   useEffect(() => setAddr(serverAddr), [serverAddr]);

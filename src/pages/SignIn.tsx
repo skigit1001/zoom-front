@@ -40,9 +40,9 @@ export default function SignIn() {
   const handleSubmit = React.useCallback(async () => {
     try {
       const { data } = await authAPI.post('/signin', formData);
-      console.log(data.token)
       setAuthToken(data.token);
       setUserInfo(data.user);
+      setTimeout(() => navigate(PopupPages.home));
     } catch (err) {
       console.error(err);
     }

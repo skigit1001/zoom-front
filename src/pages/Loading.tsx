@@ -4,14 +4,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Loading() {
   return (
-    <Box
-      width="100%"
-      height={400}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <CircularProgress />
+    <Box>
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+        <img src="/logo.png" width={150} />
+      </Box>
+      <Box display="flex" justifyContent="center" alignContent="center" height={230}>
+        <CircularProgress />
+      </Box>
     </Box>
   )
 };
