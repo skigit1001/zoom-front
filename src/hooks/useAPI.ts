@@ -5,17 +5,21 @@ import axios, { AxiosInstance } from 'axios';
 
 export default function useAPI(route?: string) {
   const [serverAddr] = useChromeStorageSync(StorageItems.ServerAddr);
+  const [authToken] = useChromeStorageSync(StorageItems.AuthToken);
 
   const axiosInstance = useMemo(() => {
     if (serverAddr) {
       const axInst: AxiosInstance = axios.create({
-        baseURL: `${serverAddr}/api/${route}`
+        baseURL: `${serverAddr}/api/${route}`,
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        },
       });
       axInst.interceptors.response.use((value) => value.data);
       return axInst;
     }
     return null;
-  }, [serverAddr, route]);
+  }, [serverAddr, authToken, route]);
 
   return axiosInstance;
 };

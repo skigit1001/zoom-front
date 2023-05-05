@@ -10,15 +10,44 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
+import useAPI from '@/hooks/useAPI';
+import { useChromeStorageLocal } from 'use-chrome-storage';
+import { StorageItems } from '@/utils/enums/StorageItems';
+
+enum SignInItems {
+  Email = 'email',
+  Password = 'password',
+};
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const authAPI = useAPI('auth');
+  const [, setAuthToken] = useChromeStorageLocal(StorageItems.AuthToken);
+  const [, setUserInfo] = useChromeStorageLocal(StorageItems.UserInfo);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-  };
+  const [formData, setFormData] = React.useState({
+    [SignInItems.Email]: '',
+    [SignInItems.Password]: '',
+  });
+
+  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(data => ({
+      ...data,
+      [e.target.name]: e.target.value
+    }));
+  }, []);
+
+  const handleSubmit = React.useCallback(async () => {
+    try {
+      const { data } = await authAPI.post('/signin', formData);
+      setAuthToken(data.toke);
+      setUserInfo(data.user);
+      navigate(PopupPages.record);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [formData, authAPI]);
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -40,20 +69,21 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
             label="Email Address"
-            name="email"
-            autoComplete="email"
+            name={SignInItems.Email}
+            value={formData[SignInItems.Email]}
+            onChange={handleChange}
             autoFocus
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
-            id="password"
+            name={SignInItems.Password}
+            value={formData[SignInItems.Password]}
+            onChange={handleChange}
             autoComplete="current-password"
           />
           <FormControlLabel
@@ -61,10 +91,10 @@ export default function SignIn() {
             label="Remember me"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
           >
             Sign In
           </Button>

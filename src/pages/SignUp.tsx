@@ -12,6 +12,12 @@ import useAPI from '@/hooks/useAPI';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 import { StorageItems } from '@/utils/enums/StorageItems';
 
+enum SignUpItems {
+  Username = 'name',
+  Email = 'email',
+  Password = 'password',
+  Role = 'role'
+};
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -20,10 +26,10 @@ export default function SignUp() {
   const [, setUserInfo] = useChromeStorageLocal(StorageItems.UserInfo);
 
   const [formData, setFormData] = React.useState({
-    name: '',
-    email: '',
-    password: '',
-    role: 'admin'
+    [SignUpItems.Username]: '',
+    [SignUpItems.Email]: '',
+    [SignUpItems.Password]: '',
+    [SignUpItems.Role]: 'admin'
   });
 
   const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +44,7 @@ export default function SignUp() {
       const { data } = await authAPI.post('/signup', formData);
       setAuthToken(data.toke);
       setUserInfo(data.user);
-      navigate(PopupPages.signIn);
+      navigate(PopupPages.record);
     } catch (err) {
       console.error(err);
     }
@@ -66,8 +72,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 label="Username"
-                name="name"
-                value={formData.name}
+                name={SignUpItems.Username}
+                value={formData[SignUpItems.Username]}
                 onChange={handleChange}
               />
             </Grid>
@@ -76,8 +82,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 label="Email Address"
-                name="email"
-                value={formData.email}
+                name={SignUpItems.Email}
+                value={formData[SignUpItems.Email]}
                 onChange={handleChange}
               />
             </Grid>
@@ -85,10 +91,10 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                name="password"
+                name={SignUpItems.Password}
                 label="Password"
                 type="password"
-                value={formData.password}
+                value={formData[SignUpItems.Password]}
                 onChange={handleChange}
               />
             </Grid>
