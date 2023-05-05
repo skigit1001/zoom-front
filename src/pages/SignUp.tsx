@@ -6,7 +6,6 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { PopupPages } from '@/utils/enums/PopupPages';
 import useAPI from '@/hooks/useAPI';
 import { StorageItems } from '@/utils/enums/StorageItems';
@@ -51,71 +50,69 @@ export default function SignUp() {
   }, [formData, authAPI]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
-          <img src="/logo.png" width={150} />
-        </Box>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Username"
-                name={SignUpItems.Username}
-                value={formData[SignUpItems.Username]}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Email Address"
-                name={SignUpItems.Email}
-                value={formData[SignUpItems.Email]}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name={SignUpItems.Password}
-                label="Password"
-                type="password"
-                value={formData[SignUpItems.Password]}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleSubmit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+        <img src="/logo.png" width={150} />
       </Box>
-    </Container>
+      <Typography component="h1" variant="h5">
+        Sign up
+      </Typography>
+      <Box sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              label="Username"
+              name={SignUpItems.Username}
+              value={formData[SignUpItems.Username]}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              label="Email Address"
+              name={SignUpItems.Email}
+              value={formData[SignUpItems.Email]}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name={SignUpItems.Password}
+              label="Password"
+              type="password"
+              value={formData[SignUpItems.Password]}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleSubmit}
+        >
+          Sign Up
+        </Button>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
+              Already have an account? Sign in
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 }

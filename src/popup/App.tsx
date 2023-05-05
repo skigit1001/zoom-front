@@ -9,7 +9,7 @@ import SignIn from '@/pages/SignIn';
 import SignUp from '@/pages/SignUp';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ServerInfo from '@/pages/ServerInfo';
-import Record from '@/pages/Record';
+import Home from '@/pages/Home';
 import Loading from '@/pages/Loading';
 import useAuthenticated from '@/hooks/useAuthenticated';
 
@@ -32,7 +32,7 @@ export default function App() {
       <CssBaseline />
       <Box width={350} px={2} py={4}>
         <Routes>
-          <Route path={PopupPages.home} Component={Record} />
+          <Route path={PopupPages.home} Component={Home} />
           <Route path={PopupPages.serverInfo} Component={ServerInfo} />
           <Route path={PopupPages.signIn} Component={SignIn} />
           <Route path={PopupPages.signUp} Component={SignUp} />
