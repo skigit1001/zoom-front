@@ -62,7 +62,7 @@ export default function SignIn() {
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box sx={{ mt: 1 }}>
         <TextField
           margin="normal"
           required
@@ -105,6 +105,11 @@ export default function SignIn() {
           <Grid item xs={12}>
             <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signUp)}>
               {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+          <Grid item xs={12}>
+            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.serverInfo)}>
+              Server info should be updated?
             </Link>
           </Grid>
         </Grid>

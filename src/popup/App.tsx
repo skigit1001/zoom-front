@@ -5,12 +5,12 @@ import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { PopupPages } from '@/utils/enums/PopupPages';
-import SignIn from '@/pages/SignIn';
-import SignUp from '@/pages/SignUp';
-import ForgotPassword from '@/pages/ForgotPassword';
-import ServerInfo from '@/pages/ServerInfo';
-import Home from '@/pages/Home';
-import Loading from '@/pages/Loading';
+import SignIn from '@/popup/pages/SignIn';
+import SignUp from '@/popup/pages/SignUp';
+import ForgotPassword from '@/popup/pages/ForgotPassword';
+import ServerInfo from '@/popup/pages/ServerInfo';
+import Home from '@/popup/pages/Home';
+import Loading from '@/popup/pages/Loading';
 import useAuthenticated from '@/hooks/useAuthenticated';
 
 const theme = createTheme();

@@ -6,6 +6,11 @@ export enum RTMessages {
   WebSocketSend,
   WebSocketError,
 
+  // MediaRecording
+  SetMediaStreamId,
+  StopRecording,
+  SendVideoChunk,
+  
   // Zoom
   ZoomNewMessage,
   ZoomSendFile,

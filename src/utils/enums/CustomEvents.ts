@@ -1,3 +1,4 @@
 export enum CustomEvents {
-  WebSocketSniffer = 'WebSocketSniffer'  
+  WebSocketSniffer = 'WebSocketSniffer',
+  SetMediaStreamId = 'SetMediaStreamId'
 };

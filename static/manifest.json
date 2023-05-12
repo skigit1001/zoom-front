@@ -13,14 +13,25 @@
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
+  "declarative_net_request" : {
+    "rule_resources" : [{
+      "id": "ruleset_zoom",
+      "enabled": true,
+      "path": "rules_zoom.json"
+    }]
+  },
   "permissions": [
-    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
     "activeTab",
+    "storage",
     "tabCapture",
     "tabs",
-    "downloads",
-    "downloads.shelf",
+    "scripting",
     "webRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "options_page": "options.html",
   "background": {
@@ -28,14 +39,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.zoom.us/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "world": "ISOLATED"
+      "world": "ISOLATED",
+      "run_at": "document_start"
     },
     {
-      "matches": ["https://*.zoom.us/*"],
+      "matches": ["<all_urls>"],
       "js": ["socketSniffer.js"],
-      "world": "MAIN"
+      "world": "MAIN",
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [

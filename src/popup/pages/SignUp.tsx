@@ -105,10 +105,15 @@ export default function SignUp() {
         >
           Sign Up
         </Button>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
+        <Grid container textAlign="right">
+          <Grid item xs={12}>
             <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
               Already have an account? Sign in
+            </Link>
+          </Grid>
+          <Grid item xs={12}>
+            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.serverInfo)}>
+              Server info should be updated?
             </Link>
           </Grid>
         </Grid>

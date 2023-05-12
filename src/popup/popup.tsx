@@ -6,6 +6,7 @@ import { PopupPages } from '@/utils/enums/PopupPages';
 
 const root = document.createElement('div');
 document.body.appendChild(root);
+
 ReactDOM.render(
   <MemoryRouter initialEntries={[PopupPages.loading]}>
     <App />

@@ -1,5 +1,5 @@
 chrome.webRequest.onBeforeSendHeaders.addListener(
-  function (details) {
+  (details) => {
     const headers = details.requestHeaders.reduce((acc, header) => ({
       ...acc,
       [header.name]: header.value
