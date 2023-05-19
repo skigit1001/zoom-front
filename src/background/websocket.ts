@@ -4,9 +4,6 @@ const socket = new WebSocket('ws://localhost:9119/api/ws');
 // Handle WebSocket connection open event
 socket.addEventListener('open', function (event) {
   console.log('WebSocket connection established!');
-
-  // Send a message to the WebSocket server
-  socket.send('Hello, server!');
 });
 
 // Handle WebSocket connection error event
@@ -23,9 +20,5 @@ socket.addEventListener('close', function (event) {
 socket.addEventListener('message', function (event) {
   console.log('Incoming WebSocket message:', event.data);
 });
-
-export function sendMessage(msg) {
-  socket.send(msg)
-};
 
 export default socket;

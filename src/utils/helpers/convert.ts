@@ -6,6 +6,20 @@ export async function blobToBase64(blob: Blob): Promise<string | ArrayBuffer> {
   });
 }
 
+export function bufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  const binary = bytes.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+  return window.btoa(binary);
+}
+
+export async function blobToBinary(blob: Blob): Promise<ArrayBuffer> {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as ArrayBuffer);
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
 export async function blobUrlToBase64(url: string): Promise<string | ArrayBuffer> {
   try {
     const res = await fetch(url);
@@ -14,4 +28,13 @@ export async function blobUrlToBase64(url: string): Promise<string | ArrayBuffer
   } catch (err) {
     console.error(err);
   }
+}
+
+export function base64ToArrayBuffer(base64) {
+  var binaryString = atob(base64);
+  var bytes = new Uint8Array(binaryString.length);
+  for (var i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
 }

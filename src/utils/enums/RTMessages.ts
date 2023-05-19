@@ -8,6 +8,7 @@ export enum RTMessages {
 
   // MediaRecording
   SetMediaStreamId,
+  StartRecording,
   StopRecording,
   SendVideoChunk,
   
