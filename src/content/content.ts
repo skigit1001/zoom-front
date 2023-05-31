@@ -2,7 +2,7 @@ import { CustomEvents } from "@/utils/enums/CustomEvents";
 import { RTMessages } from "@/utils/enums/RTMessages";
 import { recordTab } from "@/utils/helpers/record";
 import { observeDomMutations } from "./observer";
-import { blobToBase64, blobToBinary, bufferToBase64 } from "@/utils/helpers/convert";
+import { bufferToBase64 } from "@/utils/helpers/convert";
 
 let recorder: MediaRecorder;
 

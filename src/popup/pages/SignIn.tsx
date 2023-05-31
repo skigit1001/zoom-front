@@ -9,9 +9,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PopupPages } from '@/utils/enums/PopupPages';
-import useAPI from '@/hooks/useAPI';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { useStorage } from '@/hooks/useStorage';
+import baseApi from '@/services/baseApi';
 
 enum SignInItems {
   Email = 'email',
@@ -20,7 +20,6 @@ enum SignInItems {
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const authAPI = useAPI('auth');
   const [, setAuthToken] = useStorage(StorageItems.AuthToken);
   const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
@@ -38,14 +37,14 @@ export default function SignIn() {
 
   const handleSubmit = React.useCallback(async () => {
     try {
-      const { data } = await authAPI.post('/signin', formData);
+      const { data } = await baseApi.post('/auth/signin', formData);
       setAuthToken(data.token);
       setUserInfo(data.user);
       setTimeout(() => navigate(PopupPages.home));
     } catch (err) {
       console.error(err);
     }
-  }, [formData, authAPI]);
+  }, [formData]);
 
 
   return (
