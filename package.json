@@ -14,8 +14,7 @@
     "lint": "eslint --ext .tsx,.ts ./src"
   },
   "lint-staged": {
-    "*.{tsx,ts}": "eslint --fix",
-    "*.{js,css}": "prettier --write"
+    "*.{tsx,ts}": "eslint --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
