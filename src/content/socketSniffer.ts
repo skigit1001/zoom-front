@@ -1,9 +1,11 @@
-import { CustomEvents } from "@/utils/enums/CustomEvents";
-import { RTMessages } from "@/utils/enums/RTMessages";
+import { CustomEvents } from '@/utils/enums/CustomEvents';
+import { RTMessages } from '@/utils/enums/RTMessages';
 
-(() => {
+function initSocketSniffer() {
   const logWebSocketTraffic = (type: RTMessages, data: any) => {
-    const event = new CustomEvent(CustomEvents.WebSocketSniffer, { detail: { type, data } });
+    const event = new CustomEvent(CustomEvents.WebSocketSniffer, {
+      detail: { type, data },
+    });
     window.dispatchEvent(event);
   };
 
@@ -12,23 +14,23 @@ import { RTMessages } from "@/utils/enums/RTMessages";
   const addEventListener = OrigWebSocket.prototype.addEventListener;
   const wsAddEventListener = addEventListener.call.bind(addEventListener);
 
-  window.WebSocket = function WebSocket(url, protocols) {
+  window.WebSocket = function WebSocket(...args) {
     const ws: WebSocket = !(this instanceof WebSocket)
-      ? callWebSocket(this, arguments)
-      : arguments.length === 1
-        ? new OrigWebSocket(url)
-        : arguments.length >= 2
-          ? new OrigWebSocket(url, protocols)
+      ? callWebSocket(this, args)
+      : args.length === 1
+        ? new OrigWebSocket(args[1])
+        : args.length >= 2
+          ? new OrigWebSocket(args[1], args[2])
           : {};
-    wsAddEventListener(ws, 'open', (event) => {
-      logWebSocketTraffic(RTMessages.WebSocketOpen, event)
+    wsAddEventListener(ws, 'open', event => {
+      logWebSocketTraffic(RTMessages.WebSocketOpen, event);
     });
 
-    wsAddEventListener(ws, 'message', (event) => {
+    wsAddEventListener(ws, 'message', event => {
       logWebSocketTraffic(RTMessages.WebSocketMessage, event);
     });
 
-    wsAddEventListener(ws, 'close', (event) => {
+    wsAddEventListener(ws, 'close', event => {
       logWebSocketTraffic(RTMessages.WebSocketClose, event);
     });
 
@@ -43,7 +45,7 @@ import { RTMessages } from "@/utils/enums/RTMessages";
 
   OrigWebSocket.prototype.send = function (data) {
     try {
-      const payload = JSON.parse(data.toString())
+      const payload = JSON.parse(data.toString());
       if (payload?.body?.fileName) {
         logWebSocketTraffic(RTMessages.ZoomSendFile, payload.body);
       }
@@ -52,4 +54,6 @@ import { RTMessages } from "@/utils/enums/RTMessages";
     }
     return wsSend(this, data);
   };
-})();
+}
+
+initSocketSniffer();

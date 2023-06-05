@@ -5,8 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import baseApi from '@/services/baseApi';
 import { StorageItems } from '@/utils/enums/StorageItems';
 
-const storageItems = await new Promise((resolve) => {
-  chrome.storage.local.get((items) => resolve(items));
+const storageItems = await new Promise(resolve => {
+  chrome.storage.local.get(items => resolve(items));
 });
 
 const authToken = storageItems[StorageItems.AuthToken];
@@ -22,8 +22,10 @@ if (serverAddr) {
   try {
     await baseApi.get('/account');
   } catch (err) {
-    await new Promise<void>((resolve) => {
-      chrome.storage.local.set({ [StorageItems.AuthToken]: '' }, () => resolve());
+    await new Promise<void>(resolve => {
+      chrome.storage.local.set({ [StorageItems.AuthToken]: '' }, () =>
+        resolve()
+      );
     });
     baseApi.defaults.headers.common['Authorization'] = '';
   }
@@ -31,7 +33,7 @@ if (serverAddr) {
 
 /**
  * Warning: Don't import router statically
- * 
+ *
  * static import will cause unexpected behaviors in loader of react-router-dom
  */
 const router = (await import('./router')).default;
@@ -39,7 +41,4 @@ const router = (await import('./router')).default;
 const root = document.createElement('div');
 document.body.appendChild(root);
 
-ReactDOM.render(
-  <RouterProvider router={router} />,
-  root
-);
+ReactDOM.render(<RouterProvider router={router} />, root);

@@ -53,23 +53,25 @@ export default function PersistentDrawerRight() {
     navigate(PopupPages.signIn);
   };
 
-
   const handleStartRecording = () => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, ([tab]) => {
-      chrome.tabCapture.getMediaStreamId({ consumerTabId: tab.id }, (streamId) => {
-        chrome.runtime.sendMessage({
-          type: RTMessages.SetMediaStreamId,
-          data: {
-            streamId
-          }
-        });
-      });
+      chrome.tabCapture.getMediaStreamId(
+        { consumerTabId: tab.id },
+        streamId => {
+          chrome.runtime.sendMessage({
+            type: RTMessages.SetMediaStreamId,
+            data: {
+              streamId,
+            },
+          });
+        }
+      );
     });
-  }
+  };
 
   const handleStopRecording = () => {
     chrome.runtime.sendMessage({ type: RTMessages.StopRecording });
-  }
+  };
 
   return (
     <Box sx={{ display: 'flex', minHeight: 400 }}>
@@ -127,11 +129,7 @@ export default function PersistentDrawerRight() {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={handleStopRecording}
-            >
+            <Button variant="contained" fullWidth onClick={handleStopRecording}>
               Stop Recording
             </Button>
           </Grid>

@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export default function ForgotPassword() {
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -23,7 +22,13 @@ export default function ForgotPassword() {
         alignItems: 'center',
       }}
     >
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        mb={4}
+      >
         <img src="/logo.png" width={150} />
       </Box>
       <Typography component="h1" variant="h5">

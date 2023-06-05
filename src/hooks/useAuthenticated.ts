@@ -12,7 +12,8 @@ export default function useAuthenticated() {
 
   useEffect(() => {
     if (accountAPI) {
-      accountAPI.get('/')
+      accountAPI
+        .get('/')
         .then(() => {
           setAuthenticated(true);
           setInitialized(true);
@@ -22,7 +23,7 @@ export default function useAuthenticated() {
           setInitialized(true);
         });
     } else {
-      chrome.storage.local.get((items) => {
+      chrome.storage.local.get(items => {
         if (!items[StorageItems.ServerAddr]) {
           navigate(PopupPages.serverInfo);
         } else {
@@ -33,4 +34,4 @@ export default function useAuthenticated() {
   }, [accountAPI]);
 
   return [authenticated, initialized];
-};
+}

@@ -11,8 +11,8 @@ export enum RTMessages {
   StartRecording,
   StopRecording,
   SendVideoChunk,
-  
+
   // Zoom
   ZoomNewMessage,
   ZoomSendFile,
-};
+}

@@ -1,8 +1,7 @@
-import { RTMessages } from "@/utils/enums/RTMessages";
-import { ZoomChatTypes } from "@/utils/enums/zoom";
-import { blobUrlToBase64 } from "@/utils/helpers/convert";
-import { ZoomChat } from "@/utils/interfaces/zoom";
-
+import { RTMessages } from '@/utils/enums/RTMessages';
+import { ZoomChatTypes } from '@/utils/enums/zoom';
+import { blobUrlToBase64 } from '@/utils/helpers/convert';
+import { ZoomChat } from '@/utils/interfaces/zoom';
 
 async function traverseNode(node: Node, data?: ZoomChat) {
   let updated = { ...data };
@@ -32,28 +31,28 @@ async function traverseNode(node: Node, data?: ZoomChat) {
     updated.filename = img.alt;
   }
 
-  for (let child of node.childNodes) {
+  for (const child of node.childNodes) {
     const childUpdated = await traverseNode(child, updated);
     updated = { ...childUpdated };
   }
   return updated;
-};
+}
 
 export function observeDomMutations() {
-  const observer = new MutationObserver(async (mutations) => {
-    for (let mutation of mutations) {
-      for (let addedNode of mutation.addedNodes) {
+  const observer = new MutationObserver(async mutations => {
+    for (const mutation of mutations) {
+      for (const addedNode of mutation.addedNodes) {
         const data = await traverseNode(addedNode);
         if (data.id) {
           chrome.runtime.sendMessage({
             type: RTMessages.ZoomNewMessage,
-            data: data
+            data: data,
           });
         }
       }
     }
   });
   observer.observe(document, { childList: true, subtree: true });
-  
+
   return observer;
 }

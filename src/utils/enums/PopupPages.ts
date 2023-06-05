@@ -5,4 +5,4 @@ export enum PopupPages {
   forgotPassword = '/forgot-password',
   serverInfo = '/server-info',
   loading = '/loading',
-};
+}

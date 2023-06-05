@@ -16,7 +16,7 @@ import baseApi from '@/services/baseApi';
 enum SignInItems {
   Email = 'email',
   Password = 'password',
-};
+}
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -28,12 +28,15 @@ export default function SignIn() {
     [SignInItems.Password]: '',
   });
 
-  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(data => ({
-      ...data,
-      [e.target.name]: e.target.value
-    }));
-  }, []);
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData(data => ({
+        ...data,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    []
+  );
 
   const handleSubmit = React.useCallback(async () => {
     try {
@@ -47,7 +50,6 @@ export default function SignIn() {
     }
   }, [formData]);
 
-
   return (
     <Box
       sx={{
@@ -56,7 +58,13 @@ export default function SignIn() {
         alignItems: 'center',
       }}
     >
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        mb={4}
+      >
         <img src="/logo.png" width={150} />
       </Box>
       <Typography component="h1" variant="h5">
@@ -98,17 +106,29 @@ export default function SignIn() {
         </Button>
         <Grid container>
           <Grid item xs={12}>
-            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.forgotPassword)}>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => navigate(PopupPages.forgotPassword)}
+            >
               Forgot password?
             </Link>
           </Grid>
           <Grid item xs={12}>
-            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signUp)}>
-              {"Don't have an account? Sign Up"}
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => navigate(PopupPages.signUp)}
+            >
+              {'Don\'t have an account? Sign Up'}
             </Link>
           </Grid>
           <Grid item xs={12}>
-            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.serverInfo)}>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => navigate(PopupPages.serverInfo)}
+            >
               Server info should be updated?
             </Link>
           </Grid>

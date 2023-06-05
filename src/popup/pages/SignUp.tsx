@@ -15,8 +15,8 @@ enum SignUpItems {
   Username = 'name',
   Email = 'email',
   Password = 'password',
-  Role = 'role'
-};
+  Role = 'role',
+}
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,15 +28,18 @@ export default function SignUp() {
     [SignUpItems.Username]: '',
     [SignUpItems.Email]: '',
     [SignUpItems.Password]: '',
-    [SignUpItems.Role]: 'admin'
+    [SignUpItems.Role]: 'admin',
   });
 
-  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(data => ({
-      ...data,
-      [e.target.name]: e.target.value
-    }));
-  }, []);
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData(data => ({
+        ...data,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    []
+  );
 
   const handleSubmit = React.useCallback(async () => {
     try {
@@ -57,7 +60,13 @@ export default function SignUp() {
         alignItems: 'center',
       }}
     >
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        mb={4}
+      >
         <img src="/logo.png" width={150} />
       </Box>
       <Typography component="h1" variant="h5">
@@ -107,12 +116,20 @@ export default function SignUp() {
         </Button>
         <Grid container textAlign="right">
           <Grid item xs={12}>
-            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => navigate(PopupPages.signIn)}
+            >
               Already have an account? Sign in
             </Link>
           </Grid>
           <Grid item xs={12}>
-            <Link href="#" variant="body2" onClick={() => navigate(PopupPages.serverInfo)}>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => navigate(PopupPages.serverInfo)}
+            >
               Server info should be updated?
             </Link>
           </Grid>

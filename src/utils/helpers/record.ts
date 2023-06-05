@@ -5,19 +5,19 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
     audio: {
       mandatory: {
         chromeMediaSource: 'tab',
-        chromeMediaSourceId: streamId
-      }
+        chromeMediaSourceId: streamId,
+      },
     },
     video: {
       mandatory: {
         chromeMediaSource: 'tab',
-        chromeMediaSourceId: streamId
-      }
-    }
+        chromeMediaSourceId: streamId,
+      },
+    },
   });
 
   const recorder = new MediaRecorder(stream, {
-    mimeType: 'video/webm;codecs=vp8,vp9,opus'
+    mimeType: 'video/webm;codecs=vp8,vp9,opus',
   });
   // const { readable, writable } = new TransformStream({
   //   transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))

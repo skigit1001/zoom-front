@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { StorageItems } from "@/utils/enums/StorageItems";
+import { StorageItems } from '@/utils/enums/StorageItems';
 import axios, { AxiosInstance } from 'axios';
 import { useStorage } from './useStorage';
 
@@ -12,14 +12,14 @@ export default function useAPI(route?: string) {
       const axInst: AxiosInstance = axios.create({
         baseURL: `${serverAddr}/api/${route}`,
         headers: {
-          Authorization: authToken
+          Authorization: authToken,
         },
       });
-      axInst.interceptors.response.use((value) => value.data);
+      axInst.interceptors.response.use(value => value.data);
       return axInst;
     }
     return null;
   }, [serverAddr, authToken, route]);
 
   return axiosInstance;
-};
+}

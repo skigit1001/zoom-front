@@ -16,9 +16,12 @@ export default function ServerInfo() {
 
   useEffect(() => setAddr(serverAddr), [serverAddr]);
 
-  const handleChangeServerAddr = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddr(e.target.value);
-  }, []);
+  const handleChangeServerAddr = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setAddr(e.target.value);
+    },
+    []
+  );
 
   const handleSaveServerInfo = useCallback(() => {
     setServerAddr(addr);
@@ -32,7 +35,13 @@ export default function ServerInfo() {
         alignItems: 'center',
       }}
     >
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2} mb={4}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        mb={4}
+      >
         <img src="/logo.png" width={150} />
       </Box>
       <Typography component="h1" variant="h5">
@@ -58,7 +67,11 @@ export default function ServerInfo() {
         >
           Save
         </Button>
-        <Link href="#" variant="body2" onClick={() => navigate(PopupPages.signIn)}>
+        <Link
+          href="#"
+          variant="body2"
+          onClick={() => navigate(PopupPages.signIn)}
+        >
           Already have a correct info? Sign in
         </Link>
       </Box>
