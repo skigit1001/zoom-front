@@ -3,4 +3,3 @@
 
 git add .
 yarn lint-staged
-yarn run format:fix
