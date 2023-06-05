@@ -40,6 +40,7 @@ export default function SignIn() {
       const { data } = await baseApi.post('/auth/signin', formData);
       setAuthToken(data.token);
       setUserInfo(data.user);
+      baseApi.defaults.headers.common['Authorization'] = data.token;
       setTimeout(() => navigate(PopupPages.home));
     } catch (err) {
       console.error(err);

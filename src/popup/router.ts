@@ -18,6 +18,15 @@ const routes: RouteObject[] = [{
   Component: App,
   loader: async ({ request }) => {
     const url = new URL(request.url);
+
+    if (!baseApi.defaults.baseURL) {
+      if (url.pathname !== PopupPages.serverInfo) {
+        return redirect(PopupPages.serverInfo);
+      }
+      return true;
+    }
+
+    console.log(baseApi.defaults)
     if (baseApi.defaults.headers.common['Authorization']) {
       return true;
     } else {

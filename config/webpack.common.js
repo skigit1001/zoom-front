@@ -15,6 +15,9 @@ module.exports = {
     videoSources: path.resolve('src/injections/videoSources.ts'),
     audioSources: path.resolve('src/injections/audioSources.ts')
   },
+  experiments: {
+    topLevelAwait: true
+  },
   module: {
     rules: [
       {
