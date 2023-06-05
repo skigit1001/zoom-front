@@ -1,4 +1,4 @@
-# React Chrome Extension Boilerplate
+# Easymind Chrome Extension
 
 ## Getting Started
 
