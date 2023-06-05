@@ -1,4 +1,3 @@
-import React from "react";
 import { RouteObject, createMemoryRouter, redirect } from "react-router-dom";
 
 import baseApi from "@/services/baseApi";
@@ -26,7 +25,6 @@ const routes: RouteObject[] = [{
       return true;
     }
 
-    console.log(baseApi.defaults)
     if (baseApi.defaults.headers.common['Authorization']) {
       return true;
     } else {
