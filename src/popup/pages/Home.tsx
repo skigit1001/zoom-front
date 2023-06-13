@@ -53,19 +53,15 @@ export default function PersistentDrawerRight() {
     navigate(PopupPages.signIn);
   };
 
-  const handleStartRecording = () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, ([tab]) => {
-      chrome.tabCapture.getMediaStreamId(
-        { consumerTabId: tab.id },
-        streamId => {
-          chrome.runtime.sendMessage({
-            type: RTMessages.SetMediaStreamId,
-            data: {
-              streamId,
-            },
-          });
-        }
-      );
+  const handleStartRecording = async () => {
+    const [tab] = await chrome.tabs.query({ active: true });
+    const streamId = await new Promise((resolve) => chrome.tabCapture.getMediaStreamId({ consumerTabId: tab.id }, (streamId) => resolve(streamId)));
+    await chrome.runtime.sendMessage({
+      type: RTMessages.SetMediaStreamId,
+      data: {
+        streamId,
+        consumerTabId: tab.id
+      },
     });
   };
 

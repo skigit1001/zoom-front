@@ -28,9 +28,8 @@ chrome.runtime.onMessage.addListener(async ({ type, data }) => {
           });
         }
       };
-      chrome.runtime.sendMessage({ type: RTMessages.StartRecording }, () => {
-        recorder.start(1000);
-      });
+      await chrome.runtime.sendMessage({ type: RTMessages.StartRecording });
+      recorder.start(1000);
     } catch (err) {
       console.log(err);
     }
@@ -38,10 +37,16 @@ chrome.runtime.onMessage.addListener(async ({ type, data }) => {
     break;
 
   case RTMessages.StopRecording:
-    recorder.stop();
-    recorder.stream
-      .getTracks() // get all tracks from the MediaStream
-      .forEach(track => track.stop()); // stop each of them
+    if (recorder) {
+      recorder.stop();
+      recorder.stream
+        .getTracks() // get all tracks from the MediaStream
+        .forEach(track => track.stop()); // stop each of them
+    } else {
+      alert('Recording is not started or got unknown error!');
+    }
     break;
   }
+
+  return Promise.resolve();
 });

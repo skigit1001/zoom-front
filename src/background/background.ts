@@ -1,7 +1,7 @@
 import { RTMessages } from '@/utils/enums/RTMessages';
 import webSocket from './websocket';
 
-let recordingTabId;
+let recordingTabId: number;
 
 chrome.runtime.onMessage.addListener(
   async ({ type, data }, _sender, sendResponse) => {
@@ -15,19 +15,14 @@ chrome.runtime.onMessage.addListener(
       break;
 
     case RTMessages.SetMediaStreamId:
-      (chrome as any).declarativeNetRequest.updateEnabledRulesets({
-        disableRulesetIds: ['ruleset_zoom'],
+      // (chrome as any).declarativeNetRequest.updateEnabledRulesets({
+      //   disableRulesetIds: ['ruleset_zoom'],
+      // });
+      recordingTabId = data.consumerTabId;
+      chrome.tabs.sendMessage(data.consumerTabId, {
+        type: RTMessages.SetMediaStreamId,
+        data: { streamId: data.streamId },
       });
-      chrome.tabs.query(
-        { active: true, lastFocusedWindow: true },
-        ([tab]) => {
-          recordingTabId = tab.id;
-          chrome.tabs.sendMessage(tab.id, {
-            type: RTMessages.SetMediaStreamId,
-            data: { streamId: data.streamId },
-          });
-        }
-      );
       break;
 
     case RTMessages.StartRecording: {
@@ -43,15 +38,19 @@ chrome.runtime.onMessage.addListener(
     }
 
     case RTMessages.StopRecording:
-      webSocket.send('stop_recording');
-      chrome.tabs.sendMessage(recordingTabId, {
-        type: RTMessages.StopRecording,
-      });
+      if (recordingTabId > 0) {
+        webSocket.send('stop_recording');
+        chrome.tabs.sendMessage(recordingTabId, {
+          type: RTMessages.StopRecording,
+        });
+      }
       break;
 
     case RTMessages.SendVideoChunk:
       webSocket.send(data);
       break;
     }
+
+    return Promise.resolve();
   }
 );
