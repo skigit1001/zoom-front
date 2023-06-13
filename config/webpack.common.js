@@ -10,6 +10,7 @@ module.exports = {
     options: path.resolve('src/options/options.tsx'),
     background: path.resolve('src/background/background.ts'),
     content: path.resolve('src/content/content.ts'),
+    recorder: path.resolve('src/content/recorder.ts'),
     socketSniffer: path.resolve('src/content/socketSniffer.ts'),
     detectMedia: path.resolve('src/injections/detectMedia.ts'),
     videoSources: path.resolve('src/injections/videoSources.ts'),

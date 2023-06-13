@@ -34,6 +34,11 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
   output.addTrack(destination.stream.getAudioTracks()[0]);
   output.addTrack(stream.getVideoTracks()[0]);
 
+  // prevent muting source tab audio by MediaRecorder 
+  const audio = new Audio();
+  audio.srcObject = output;
+  audio.play();
+
   const recorder = new MediaRecorder(output, {
     mimeType: 'video/webm;codecs=vp8,vp9,opus',
   });
