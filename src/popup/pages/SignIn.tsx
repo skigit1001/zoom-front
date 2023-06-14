@@ -12,6 +12,7 @@ import { PopupPages } from '@/utils/enums/PopupPages';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { useStorage } from '@/hooks/useStorage';
 import baseApi from '@/services/baseApi';
+import { RTMessages } from '@/utils/enums/RTMessages';
 
 enum SignInItems {
   Email = 'email',
@@ -43,6 +44,13 @@ export default function SignIn() {
       const { data } = await baseApi.post('/auth/signin', formData);
       setAuthToken(data.token);
       setUserInfo(data.user);
+      
+      // set proxy authurization header
+      chrome.runtime.sendMessage({
+        type: RTMessages.SetProxy,
+        data: data.token
+      });
+
       baseApi.defaults.headers.common['Authorization'] = data.token;
       setTimeout(() => navigate(PopupPages.home));
     } catch (err) {

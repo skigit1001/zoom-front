@@ -50,6 +50,12 @@ export default function PersistentDrawerRight() {
   const handleLogout = () => {
     setAuthToken(null);
     setUserInfo(null);
+    
+    chrome.runtime.sendMessage({
+      type: RTMessages.SetProxy,
+      data: ''
+    });
+
     navigate(PopupPages.signIn);
   };
 

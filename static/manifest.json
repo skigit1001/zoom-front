@@ -13,13 +13,6 @@
     "default_title": "EasyMind",
     "default_icon": "icon.png"
   },
-  "declarative_net_request" : {
-    "rule_resources" : [{
-      "id": "ruleset_zoom",
-      "enabled": true,
-      "path": "rules_zoom.json"
-    }]
-  },
   "permissions": [
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",

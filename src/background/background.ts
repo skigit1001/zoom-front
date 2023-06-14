@@ -1,26 +1,12 @@
 import { RTMessages } from '@/utils/enums/RTMessages';
 import webSocket from './websocket';
+import setupProxy from './proxy';
 
 let recordingTabId: number;
 
-const config = {
-  mode: 'fixed_servers',
-  rules: {
-    proxyForHttps: {
-      scheme: 'http',
-      host: 'localhost',
-      port: 8080
-    },
-    bypassList: []
-  }
-};
-
-chrome.proxy.settings.set(
-  {value: config, scope: 'regular'},
-  function() {
-    console.log('Setup proxy successfully!');
-  }
-);
+chrome.runtime.onInstalled.addListener(function () {
+  setupProxy();
+});
 
 chrome.runtime.onMessage.addListener(
   async ({ type, data }, _sender, sendResponse) => {
@@ -65,6 +51,46 @@ chrome.runtime.onMessage.addListener(
     case RTMessages.SendVideoChunk:
       webSocket.send(data);
       break;
+
+    case RTMessages.SetProxy: {
+      (chrome as any).declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [1],
+        addRules: [{
+          'id': 1,
+          'priority': 1,
+          'action': {
+            'type': 'modifyHeaders',
+            'requestHeaders': [
+              {
+                'header': 'Proxy-Authorization',
+                'operation': 'set',
+                'value': data
+              }
+            ]
+          },
+          'condition': {
+            'resourceTypes': [
+              'main_frame',
+              'sub_frame',
+              'stylesheet',
+              'script',
+              'image',
+              'font',
+              'object',
+              'xmlhttprequest',
+              'ping',
+              'csp_report',
+              'media',
+              'websocket',
+              'webtransport',
+              'webbundle',
+              'other'
+            ]
+          }
+        }]
+      });
+      break;
+    }
     }
 
     return Promise.resolve();

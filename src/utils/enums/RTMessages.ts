@@ -16,4 +16,7 @@ export enum RTMessages {
   // Zoom
   ZoomNewMessage,
   ZoomSendFile,
+
+  // Proxy
+  SetProxy,
 }
