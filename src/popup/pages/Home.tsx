@@ -54,7 +54,7 @@ export default function PersistentDrawerRight() {
   };
 
   const handleStartRecording = async () => {
-    const [tab] = await chrome.tabs.query({ active: true });
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const streamId = await new Promise((resolve) => chrome.tabCapture.getMediaStreamId({ consumerTabId: tab.id }, (streamId) => resolve(streamId)));
     await chrome.runtime.sendMessage({
       type: RTMessages.SetMediaStreamId,

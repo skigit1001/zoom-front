@@ -1,26 +1,26 @@
 export async function recordTab(streamId: string): Promise<MediaRecorder> {
-  const stream = await (navigator as any).mediaDevices.getUserMedia({
+  const stream = await navigator.mediaDevices.getUserMedia({
     // audio: {
     //   mandatory: {
     //     chromeMediaSource: 'tab',
     //     chromeMediaSourceId: streamId,
     //   },
-    // },
+    // }  as MediaTrackConstraints,
     video: {
       mandatory: {
         chromeMediaSource: 'tab',
         chromeMediaSourceId: streamId,
       },
-    },
+    } as MediaTrackConstraints,
   });
 
   const audioCtx = new AudioContext();
   const destination = audioCtx.createMediaStreamDestination();
   const output = new MediaStream();
-  
+
   const sysSource = audioCtx.createMediaStreamSource(stream);
   sysSource.connect(destination);
-  
+
   let micStream;
 
   try {
