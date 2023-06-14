@@ -1,11 +1,11 @@
 export async function recordTab(streamId: string): Promise<MediaRecorder> {
   const stream = await (navigator as any).mediaDevices.getUserMedia({
-    audio: {
-      mandatory: {
-        chromeMediaSource: 'tab',
-        chromeMediaSourceId: streamId,
-      },
-    },
+    // audio: {
+    //   mandatory: {
+    //     chromeMediaSource: 'tab',
+    //     chromeMediaSourceId: streamId,
+    //   },
+    // },
     video: {
       mandatory: {
         chromeMediaSource: 'tab',
@@ -17,7 +17,7 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
   const audioCtx = new AudioContext();
   const destination = audioCtx.createMediaStreamDestination();
   const output = new MediaStream();
-
+  
   const sysSource = audioCtx.createMediaStreamSource(stream);
   sysSource.connect(destination);
   
@@ -34,17 +34,11 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
   output.addTrack(destination.stream.getAudioTracks()[0]);
   output.addTrack(stream.getVideoTracks()[0]);
 
-  // prevent muting source tab audio by MediaRecorder 
-  const audio = new Audio();
-  audio.srcObject = output;
-  audio.play();
-
   const recorder = new MediaRecorder(output, {
     mimeType: 'video/webm;codecs=vp8,vp9,opus',
   });
 
   recorder.onstop = () => {
-    output.getTracks().forEach(track => track.stop());
     stream.getTracks().forEach(track => track.stop());
     if (micStream) {
       micStream.getTracks().forEach(track => track.stop());

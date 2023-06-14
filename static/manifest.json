@@ -49,12 +49,6 @@
       "js": ["socketSniffer.js"],
       "world": "MAIN",
       "run_at": "document_start"
-    }, 
-    {
-      "matches": ["<all_urls>"],
-      "js": ["recorder.js"],
-      "world": "MAIN",
-      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
