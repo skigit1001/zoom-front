@@ -3,6 +3,25 @@ import webSocket from './websocket';
 
 let recordingTabId: number;
 
+const config = {
+  mode: 'fixed_servers',
+  rules: {
+    proxyForHttps: {
+      scheme: 'http',
+      host: 'localhost',
+      port: 8080
+    },
+    bypassList: []
+  }
+};
+
+chrome.proxy.settings.set(
+  {value: config, scope: 'regular'},
+  function() {
+    console.log('Setup proxy successfully!');
+  }
+);
+
 chrome.runtime.onMessage.addListener(
   async ({ type, data }, _sender, sendResponse) => {
     switch (type) {
@@ -15,9 +34,6 @@ chrome.runtime.onMessage.addListener(
       break;
 
     case RTMessages.SetMediaStreamId:
-      // (chrome as any).declarativeNetRequest.updateEnabledRulesets({
-      //   disableRulesetIds: ['ruleset_zoom'],
-      // });
       recordingTabId = data.consumerTabId;
       chrome.tabs.sendMessage(data.consumerTabId, {
         type: RTMessages.SetMediaStreamId,

@@ -28,7 +28,8 @@
     "tabCapture",
     "tabs",
     "scripting",
-    "webRequest"
+    "webRequest",
+    "proxy"
   ],
   "host_permissions": [
     "<all_urls>"
