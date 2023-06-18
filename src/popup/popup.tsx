@@ -6,13 +6,10 @@ import baseApi from '@/services/baseApi';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
 
-const storageItems = await getStorageItems([
+const { authToken, serverAddr } = await getStorageItems([
   StorageItems.AuthToken,
   StorageItems.ServerAddr,
 ]);
-
-const authToken = storageItems[StorageItems.AuthToken];
-const serverAddr = storageItems[StorageItems.ServerAddr];
 
 if (serverAddr) {
   baseApi.defaults.baseURL = `${serverAddr}/api`;
