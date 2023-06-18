@@ -50,23 +50,31 @@ export default function PersistentDrawerRight() {
   const handleLogout = () => {
     setAuthToken(null);
     setUserInfo(null);
-    
+
     chrome.runtime.sendMessage({
       type: RTMessages.SetProxy,
-      data: ''
+      data: '',
     });
 
     navigate(PopupPages.signIn);
   };
 
   const handleStartRecording = async () => {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const streamId = await new Promise((resolve) => chrome.tabCapture.getMediaStreamId({ consumerTabId: tab.id }, (streamId) => resolve(streamId)));
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    const streamId = await new Promise((resolve) =>
+      chrome.tabCapture.getMediaStreamId(
+        { consumerTabId: tab.id },
+        (streamId) => resolve(streamId)
+      )
+    );
     await chrome.runtime.sendMessage({
       type: RTMessages.SetMediaStreamId,
       data: {
         streamId,
-        consumerTabId: tab.id
+        consumerTabId: tab.id,
       },
     });
   };

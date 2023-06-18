@@ -4,10 +4,12 @@ import { RouterProvider } from 'react-router-dom';
 
 import baseApi from '@/services/baseApi';
 import { StorageItems } from '@/utils/enums/StorageItems';
+import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
 
-const storageItems = await new Promise(resolve => {
-  chrome.storage.local.get(items => resolve(items));
-});
+const storageItems = await getStorageItems([
+  StorageItems.AuthToken,
+  StorageItems.ServerAddr,
+]);
 
 const authToken = storageItems[StorageItems.AuthToken];
 const serverAddr = storageItems[StorageItems.ServerAddr];
@@ -22,11 +24,7 @@ if (serverAddr) {
   try {
     await baseApi.get('/account');
   } catch (err) {
-    await new Promise<void>(resolve => {
-      chrome.storage.local.set({ [StorageItems.AuthToken]: '' }, () =>
-        resolve()
-      );
-    });
+    await setStorageItems({ [StorageItems.AuthToken]: '' });
     baseApi.defaults.headers.common['Authorization'] = '';
   }
 }

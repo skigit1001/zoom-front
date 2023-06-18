@@ -18,19 +18,19 @@ function initSocketSniffer() {
     const ws: WebSocket = !(this instanceof WebSocket)
       ? callWebSocket(this, args)
       : args.length === 1
-        ? new OrigWebSocket(args[1])
+        ? new OrigWebSocket(args[0])
         : args.length >= 2
-          ? new OrigWebSocket(args[1], args[2])
+          ? new OrigWebSocket(args[0], args[1])
           : {};
-    wsAddEventListener(ws, 'open', event => {
+    wsAddEventListener(ws, 'open', (event) => {
       logWebSocketTraffic(RTMessages.WebSocketOpen, event);
     });
 
-    wsAddEventListener(ws, 'message', event => {
+    wsAddEventListener(ws, 'message', (event) => {
       logWebSocketTraffic(RTMessages.WebSocketMessage, event);
     });
 
-    wsAddEventListener(ws, 'close', event => {
+    wsAddEventListener(ws, 'close', (event) => {
       logWebSocketTraffic(RTMessages.WebSocketClose, event);
     });
 

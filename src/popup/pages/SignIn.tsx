@@ -31,7 +31,7 @@ export default function SignIn() {
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(data => ({
+      setFormData((data) => ({
         ...data,
         [e.target.name]: e.target.value,
       }));
@@ -44,11 +44,11 @@ export default function SignIn() {
       const { data } = await baseApi.post('/auth/signin', formData);
       setAuthToken(data.token);
       setUserInfo(data.user);
-      
+
       // set proxy authurization header
       chrome.runtime.sendMessage({
         type: RTMessages.SetProxy,
-        data: data.token
+        data: data.token,
       });
 
       baseApi.defaults.headers.common['Authorization'] = data.token;

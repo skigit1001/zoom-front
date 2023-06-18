@@ -39,9 +39,9 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
   });
 
   recorder.onstop = () => {
-    stream.getTracks().forEach(track => track.stop());
+    stream.getTracks().forEach((track) => track.stop());
     if (micStream) {
-      micStream.getTracks().forEach(track => track.stop());
+      micStream.getTracks().forEach((track) => track.stop());
     }
   };
 

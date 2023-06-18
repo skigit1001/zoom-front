@@ -32,7 +32,7 @@ export default function SignUp() {
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(data => ({
+      setFormData((data) => ({
         ...data,
         [e.target.name]: e.target.value,
       }));

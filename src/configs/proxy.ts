@@ -4,10 +4,10 @@ const DEFAULT_PROXY_CONFIG = {
     proxyForHttps: {
       scheme: 'http',
       host: 'localhost',
-      port: 8080
+      port: 8080,
     },
-    bypassList: ['localhost']
-  }
+    bypassList: ['localhost'],
+  },
 };
 
 export default DEFAULT_PROXY_CONFIG;

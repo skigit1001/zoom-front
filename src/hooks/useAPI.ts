@@ -15,7 +15,7 @@ export default function useAPI(route?: string) {
           Authorization: authToken,
         },
       });
-      axInst.interceptors.response.use(value => value.data);
+      axInst.interceptors.response.use((value) => value.data);
       return axInst;
     }
     return null;

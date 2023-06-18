@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(async ({ type, data }) => {
           const buffer = await event.data.arrayBuffer();
           chrome.runtime.sendMessage({
             type: RTMessages.SendVideoChunk,
-            data: bufferToBase64(buffer)
+            data: bufferToBase64(buffer),
           });
         }
       };
@@ -33,13 +33,14 @@ chrome.runtime.onMessage.addListener(async ({ type, data }) => {
     } catch (err) {
       console.log(err);
     }
-      
+
     break;
 
   case RTMessages.StopRecording:
     recorder.stop();
-    recorder.stream.getTracks() // get all tracks from the MediaStream
-      .forEach(track => track.stop()); // stop each of them
+    recorder.stream
+      .getTracks() // get all tracks from the MediaStream
+      .forEach((track) => track.stop()); // stop each of them
     break;
   }
 });

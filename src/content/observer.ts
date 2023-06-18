@@ -39,7 +39,7 @@ async function traverseNode(node: Node, data?: ZoomChat) {
 }
 
 export function observeDomMutations() {
-  const observer = new MutationObserver(async mutations => {
+  const observer = new MutationObserver(async (mutations) => {
     for (const mutation of mutations) {
       for (const addedNode of mutation.addedNodes) {
         const data = await traverseNode(addedNode);

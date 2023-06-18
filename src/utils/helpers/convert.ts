@@ -1,5 +1,5 @@
 export async function blobToBase64(blob: Blob): Promise<string | ArrayBuffer> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result);
     reader.readAsDataURL(blob);
@@ -16,7 +16,7 @@ export function bufferToBase64(buffer: ArrayBuffer): string {
 }
 
 export async function blobToBinary(blob: Blob): Promise<ArrayBuffer> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result as ArrayBuffer);
     reader.readAsArrayBuffer(blob);

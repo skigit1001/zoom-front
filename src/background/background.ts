@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(
 
     case RTMessages.StartRecording: {
       webSocket.send('start_recording');
-      const awaiterAccept = event => {
+      const awaiterAccept = (event) => {
         if (event.data === 'accepted_recording') {
           sendResponse();
           webSocket.removeEventListener('message', awaiterAccept);
@@ -55,39 +55,41 @@ chrome.runtime.onMessage.addListener(
     case RTMessages.SetProxy: {
       (chrome as any).declarativeNetRequest.updateDynamicRules({
         removeRuleIds: [1],
-        addRules: [{
-          'id': 1,
-          'priority': 1,
-          'action': {
-            'type': 'modifyHeaders',
-            'requestHeaders': [
-              {
-                'header': 'Proxy-Authorization',
-                'operation': 'set',
-                'value': data
-              }
-            ]
+        addRules: [
+          {
+            id: 1,
+            priority: 1,
+            action: {
+              type: 'modifyHeaders',
+              requestHeaders: [
+                {
+                  header: 'Proxy-Authorization',
+                  operation: 'set',
+                  value: data,
+                },
+              ],
+            },
+            condition: {
+              resourceTypes: [
+                'main_frame',
+                'sub_frame',
+                'stylesheet',
+                'script',
+                'image',
+                'font',
+                'object',
+                'xmlhttprequest',
+                'ping',
+                'csp_report',
+                'media',
+                'websocket',
+                'webtransport',
+                'webbundle',
+                'other',
+              ],
+            },
           },
-          'condition': {
-            'resourceTypes': [
-              'main_frame',
-              'sub_frame',
-              'stylesheet',
-              'script',
-              'image',
-              'font',
-              'object',
-              'xmlhttprequest',
-              'ping',
-              'csp_report',
-              'media',
-              'websocket',
-              'webtransport',
-              'webbundle',
-              'other'
-            ]
-          }
-        }]
+        ],
       });
       break;
     }

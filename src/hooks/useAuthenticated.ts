@@ -23,7 +23,7 @@ export default function useAuthenticated() {
           setInitialized(true);
         });
     } else {
-      chrome.storage.local.get(items => {
+      chrome.storage.local.get((items) => {
         if (!items[StorageItems.ServerAddr]) {
           navigate(PopupPages.serverInfo);
         } else {
