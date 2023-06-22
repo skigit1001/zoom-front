@@ -1,36 +1,66 @@
 import { RTMessages } from '@/utils/enums/RTMessages';
-import webSocket from './websocket';
 import setupProxy from './proxy';
+import webSocket from './websocket';
+import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
+import { StorageItems } from '@/utils/enums/StorageItems';
+import { WsEvents } from '@/utils/enums/WebSocketEvents';
 
-let recordingTabId: number;
+const handleAuthRequired = async (_, callbackFn) => {
+  const { proxyUsername, proxyPassword } = await getStorageItems([StorageItems.ProxyUsername, StorageItems.ProxyPassword]);
 
-chrome.runtime.onInstalled.addListener(function () {
+  callbackFn({
+    authCredentials: {
+      username: proxyUsername || '',
+      password: proxyPassword || ''
+    }
+  });
+};
+
+chrome.runtime.onInstalled.addListener(async () => {
   setupProxy();
 });
+
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const tab = await new Promise<chrome.tabs.Tab>((resolve) => chrome.tabs.get(activeInfo.tabId, (tab) => resolve(tab)));
+
+  if (tab.url.includes('zoom.us/')) {
+    setupProxy();
+  } else {
+    chrome.proxy.settings.clear({ scope: 'regular' });
+  }
+});
+
+chrome.webRequest.onAuthRequired.addListener(
+  handleAuthRequired,
+  { urls: ['<all_urls>'] }, ['asyncBlocking']
+);
 
 chrome.runtime.onMessage.addListener(
   async ({ type, data }, _sender, sendResponse) => {
     switch (type) {
-    case RTMessages.ZoomNewMessage:
+    case RTMessages.ZoomNewMessage: {
       console.log('New Message', data);
       break;
-
-    case RTMessages.ZoomSendFile:
+    }
+      
+    case RTMessages.ZoomSendFile: {
       console.log('File Transfer', data);
       break;
+    }
 
-    case RTMessages.SetMediaStreamId:
-      recordingTabId = data.consumerTabId;
+    case RTMessages.SetMediaStreamId: {
+      await setStorageItems({ [StorageItems.RecordingTabId]: data.consumerTabId });
       chrome.tabs.sendMessage(data.consumerTabId, {
         type: RTMessages.SetMediaStreamId,
         data: { streamId: data.streamId },
       });
       break;
+    }
 
     case RTMessages.StartRecording: {
-      webSocket.send('start_recording');
+      webSocket.send(WsEvents.StartRecording);
       const awaiterAccept = (event) => {
-        if (event.data === 'accepted_recording') {
+        if (event.data === WsEvents.StopRecording) {
           sendResponse();
           webSocket.removeEventListener('message', awaiterAccept);
         }
@@ -39,58 +69,33 @@ chrome.runtime.onMessage.addListener(
       break;
     }
 
-    case RTMessages.StopRecording:
+    case RTMessages.StopRecording: {
+      const { recordingTabId } = await getStorageItems([StorageItems.RecordingTabId]);
+
       if (recordingTabId > 0) {
-        webSocket.send('stop_recording');
+        webSocket.send(WsEvents.StopRecording);
         chrome.tabs.sendMessage(recordingTabId, {
           type: RTMessages.StopRecording,
         });
       }
       break;
+    }
 
-    case RTMessages.SendVideoChunk:
+    case RTMessages.SendVideoChunk: {
       webSocket.send(data);
       break;
+    }
 
     case RTMessages.SetProxy: {
-      (chrome as any).declarativeNetRequest.updateDynamicRules({
-        removeRuleIds: [1],
-        addRules: [
-          {
-            id: 1,
-            priority: 1,
-            action: {
-              type: 'modifyHeaders',
-              requestHeaders: [
-                {
-                  header: 'Proxy-Authorization',
-                  operation: 'set',
-                  value: data,
-                },
-              ],
-            },
-            condition: {
-              resourceTypes: [
-                'main_frame',
-                'sub_frame',
-                'stylesheet',
-                'script',
-                'image',
-                'font',
-                'object',
-                'xmlhttprequest',
-                'ping',
-                'csp_report',
-                'media',
-                'websocket',
-                'webtransport',
-                'webbundle',
-                'other',
-              ],
-            },
-          },
-        ],
-      });
+      chrome.webRequest.onAuthRequired.removeListener(handleAuthRequired);
+      chrome.webRequest.onAuthRequired.addListener(
+        handleAuthRequired,
+        { urls: ['<all_urls>'] }, ['asyncBlocking']
+      );
+      break;
+    }
+
+    default: {
       break;
     }
     }

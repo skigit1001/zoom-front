@@ -15,13 +15,13 @@
   },
   "permissions": [
     "declarativeNetRequest",
-    "declarativeNetRequestFeedback",
     "activeTab",
     "storage",
     "tabCapture",
     "tabs",
     "scripting",
     "webRequest",
+    "webRequestAuthProvider",
     "proxy"
   ],
   "host_permissions": [
@@ -33,13 +33,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://*.zoom.us/*"],
       "js": ["content.js"],
       "world": "ISOLATED",
       "run_at": "document_start"
     },
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://*.zoom.us/*"],
       "js": ["socketSniffer.js"],
       "world": "MAIN",
       "run_at": "document_start"
@@ -54,7 +54,7 @@
         "audioSources.js",
         "audioSources.html"
       ],
-      "matches": ["<all_urls>"]
+      "matches": ["https://*.zoom.us/*"]
     }
   ]
 }

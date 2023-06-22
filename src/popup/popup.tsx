@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom';
 import baseApi from '@/services/baseApi';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
+import { AUTH_HEADER } from '@/config';
 
 const { authToken, serverAddr } = await getStorageItems([
   StorageItems.AuthToken,
@@ -15,14 +16,18 @@ if (serverAddr) {
   baseApi.defaults.baseURL = `${serverAddr}/api`;
 
   if (authToken) {
-    baseApi.defaults.headers.common['Authorization'] = authToken;
-  }
+    baseApi.defaults.headers.common[AUTH_HEADER] = authToken;
 
-  try {
-    await baseApi.get('/account');
-  } catch (err) {
-    await setStorageItems({ [StorageItems.AuthToken]: '' });
-    baseApi.defaults.headers.common['Authorization'] = '';
+    try {
+      await baseApi.get('/account', {
+        headers: {
+          Authorization: authToken
+        }
+      });
+    } catch (err) {
+      await setStorageItems({ [StorageItems.AuthToken]: '' });
+      baseApi.defaults.headers.common[AUTH_HEADER] = '';
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import Loading from './pages/Loading';
 import ServerInfo from './pages/ServerInfo';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import { AUTH_HEADER } from '@/config';
 
 const routes: RouteObject[] = [
   {
@@ -25,7 +26,7 @@ const routes: RouteObject[] = [
         return true;
       }
 
-      if (baseApi.defaults.headers.common['Authorization']) {
+      if (baseApi.defaults.headers.common[AUTH_HEADER]) {
         return true;
       } else {
         if (url.pathname !== PopupPages.signIn) {

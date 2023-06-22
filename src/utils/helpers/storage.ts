@@ -1,6 +1,6 @@
 import { StorageItems } from '../enums/StorageItems';
 
-export type LocalStorage = { [key in StorageItems]?: string };
+export type LocalStorage = { [key in StorageItems]?: any };
 
 export const getStorageItems = (
   keys: StorageItems[] = []

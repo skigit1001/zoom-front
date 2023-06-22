@@ -10,9 +10,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PopupPages } from '@/utils/enums/PopupPages';
 import { StorageItems } from '@/utils/enums/StorageItems';
-import { useStorage } from '@/hooks/useStorage';
 import baseApi from '@/services/baseApi';
 import { RTMessages } from '@/utils/enums/RTMessages';
+import { setStorageItems } from '@/utils/helpers/storage';
+import { AUTH_HEADER } from '@/config';
 
 enum SignInItems {
   Email = 'email',
@@ -21,8 +22,6 @@ enum SignInItems {
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [, setAuthToken] = useStorage(StorageItems.AuthToken);
-  const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
   const [formData, setFormData] = React.useState({
     [SignInItems.Email]: '',
@@ -42,16 +41,18 @@ export default function SignIn() {
   const handleSubmit = React.useCallback(async () => {
     try {
       const { data } = await baseApi.post('/auth/signin', formData);
-      setAuthToken(data.token);
-      setUserInfo(data.user);
 
-      // set proxy authurization header
-      chrome.runtime.sendMessage({
-        type: RTMessages.SetProxy,
-        data: data.token,
+      await setStorageItems({
+        [StorageItems.AuthToken]: data.token,
+        [StorageItems.UserInfo]: data.user,
+        [StorageItems.ProxyUsername]: 'guest',
+        [StorageItems.ProxyPassword]: 'guest',
       });
 
-      baseApi.defaults.headers.common['Authorization'] = data.token;
+      chrome.runtime.sendMessage({ type: RTMessages.SetProxy });
+
+      baseApi.defaults.headers.common[AUTH_HEADER] = data.token;
+      
       setTimeout(() => navigate(PopupPages.home));
     } catch (err) {
       console.error(err);
