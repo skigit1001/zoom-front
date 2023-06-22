@@ -4,7 +4,33 @@ import webSocket from './websocket';
 import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { WsEvents } from '@/utils/enums/WebSocketEvents';
+import { URL_CHECKLIST } from '@/config';
 
+
+chrome.runtime.onInstalled.addListener(async () => {
+  setupProxy();
+});
+
+/**
+ * Check whether current activated tab should pass through proxy whenever selecting tabs
+ * 
+ * @param activeInfo tabId and windowId of activated tab 
+ */
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const tab = await new Promise<chrome.tabs.Tab>((resolve) => chrome.tabs.get(activeInfo.tabId, (tab) => resolve(tab)));
+
+  if (URL_CHECKLIST.some(pattern => new RegExp(pattern).test(tab.url))) {
+    // Set proxy if current tab url is in checklist
+    setupProxy();
+  } else {
+    // Otherwise, clear proxy
+    chrome.proxy.settings.clear({ scope: 'regular' });
+  }
+});
+
+/**
+ * Set basic HTTP credentials of username and password instead of inputting by chrome <sign in> prompt
+ */
 const handleAuthRequired = async (_, callbackFn) => {
   const { proxyUsername, proxyPassword } = await getStorageItems([StorageItems.ProxyUsername, StorageItems.ProxyPassword]);
 
@@ -15,26 +41,14 @@ const handleAuthRequired = async (_, callbackFn) => {
     }
   });
 };
-
-chrome.runtime.onInstalled.addListener(async () => {
-  setupProxy();
-});
-
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  const tab = await new Promise<chrome.tabs.Tab>((resolve) => chrome.tabs.get(activeInfo.tabId, (tab) => resolve(tab)));
-
-  if (tab.url.includes('zoom.us/')) {
-    setupProxy();
-  } else {
-    chrome.proxy.settings.clear({ scope: 'regular' });
-  }
-});
-
 chrome.webRequest.onAuthRequired.addListener(
   handleAuthRequired,
-  { urls: ['<all_urls>'] }, ['asyncBlocking']
+  { urls: URL_CHECKLIST }, ['asyncBlocking']
 );
 
+/**
+ * Service worker message handler
+ */
 chrome.runtime.onMessage.addListener(
   async ({ type, data }, _sender, sendResponse) => {
     switch (type) {
@@ -42,7 +56,7 @@ chrome.runtime.onMessage.addListener(
       console.log('New Message', data);
       break;
     }
-      
+
     case RTMessages.ZoomSendFile: {
       console.log('File Transfer', data);
       break;
@@ -90,7 +104,7 @@ chrome.runtime.onMessage.addListener(
       chrome.webRequest.onAuthRequired.removeListener(handleAuthRequired);
       chrome.webRequest.onAuthRequired.addListener(
         handleAuthRequired,
-        { urls: ['<all_urls>'] }, ['asyncBlocking']
+        { urls: URL_CHECKLIST }, ['asyncBlocking']
       );
       break;
     }
@@ -99,7 +113,5 @@ chrome.runtime.onMessage.addListener(
       break;
     }
     }
-
-    return Promise.resolve();
   }
 );
