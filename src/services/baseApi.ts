@@ -2,10 +2,6 @@ import axios from 'axios';
 
 const baseApi = axios.create({
   withCredentials: true,
-  auth: {
-    username: 'guest',
-    password: 'guest'
-  }
 });
 
 baseApi.interceptors.response.use((res) => res.data);
