@@ -16,11 +16,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
-import { useStorage } from '@/hooks/useStorage';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { PopupPages } from '@/utils/enums/PopupPages';
 import { Button } from '@mui/material';
 import { RTMessages } from '@/utils/enums/RTMessages';
+import { setStorageItems } from '@/utils/helpers/storage';
 
 const drawerWidth = 240;
 
@@ -36,8 +36,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerRight() {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const [, setAuthToken] = useStorage(StorageItems.AuthToken);
-  const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -47,15 +45,13 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
 
-  const handleLogout = () => {
-    setAuthToken(null);
-    setUserInfo(null);
-
-    chrome.runtime.sendMessage({
-      type: RTMessages.SetProxy,
-      data: '',
+  const handleLogout = async () => {
+    await setStorageItems({
+      [StorageItems.AuthToken]: '',
+      [StorageItems.UserInfo]: {},
+      [StorageItems.ProxyUsername]: '',
+      [StorageItems.ProxyPassword]: ''
     });
-
     navigate(PopupPages.signIn);
   };
 
