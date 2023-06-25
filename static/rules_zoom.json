@@ -3,32 +3,12 @@
     "id": 1,
     "priority": 1,
     "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        {
-          "header": "Proxy-Authorization",
-          "operation": "set",
-          "value": "Custom Proxy Authorization Value"
-        }
-      ]
+      "type": "block"
     },
     "condition": {
+      "urlFilter": "*.zoom.us/wc/*",
       "resourceTypes": [
-        "main_frame",
-        "sub_frame",
-        "stylesheet",
-        "script",
-        "image",
-        "font",
-        "object",
-        "xmlhttprequest",
-        "ping",
-        "csp_report",
-        "media",
-        "websocket",
-        "webtransport",
-        "webbundle",
-        "other"
+        "main_frame"
       ]
     }
   }

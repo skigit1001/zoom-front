@@ -15,9 +15,12 @@
   },
   "permissions": [
     "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "declarativeNetRequestFeedback",
     "activeTab",
     "storage",
     "tabCapture",
+    "desktopCapture",
     "tabs",
     "scripting",
     "webRequest",
@@ -31,16 +34,33 @@
   "background": {
     "service_worker": "background.js"
   },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_zoom",
+        "enabled": false,
+        "path": "rules_zoom.json"
+      }
+    ]
+  },
   "content_scripts": [
     {
-      "matches": ["https://*.zoom.us/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://*.zoom.us/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "world": "ISOLATED",
       "run_at": "document_start"
     },
     {
-      "matches": ["https://*.zoom.us/*"],
-      "js": ["socketSniffer.js"],
+      "matches": [
+        "https://*.zoom.us/*"
+      ],
+      "js": [
+        "socketSniffer.js"
+      ],
       "world": "MAIN",
       "run_at": "document_start"
     }
@@ -54,7 +74,9 @@
         "audioSources.js",
         "audioSources.html"
       ],
-      "matches": ["https://*.zoom.us/*"]
+      "matches": [
+        "https://*.zoom.us/*"
+      ]
     }
   ]
 }

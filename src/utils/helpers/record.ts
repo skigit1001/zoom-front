@@ -1,25 +1,29 @@
-export async function recordTab(streamId: string): Promise<MediaRecorder> {
+export async function recordTab(streamId: string, onStop = () => void 0): Promise<MediaRecorder> {
   const stream = await navigator.mediaDevices.getUserMedia({
-    // audio: {
-    //   mandatory: {
-    //     chromeMediaSource: 'tab',
-    //     chromeMediaSourceId: streamId,
-    //   },
-    // }  as MediaTrackConstraints,
+    audio: {
+      mandatory: {
+        chromeMediaSource: 'desktop',
+        chromeMediaSourceId: streamId,
+      },
+    }  as MediaTrackConstraints,
     video: {
       mandatory: {
-        chromeMediaSource: 'tab',
+        chromeMediaSource: 'desktop',
         chromeMediaSourceId: streamId,
       },
     } as MediaTrackConstraints,
   });
 
+
   const audioCtx = new AudioContext();
   const destination = audioCtx.createMediaStreamDestination();
-  const output = new MediaStream();
 
-  const sysSource = audioCtx.createMediaStreamSource(stream);
-  sysSource.connect(destination);
+  try {
+    const sysSource = audioCtx.createMediaStreamSource(stream);
+    sysSource.connect(destination);
+  } catch (err) {
+    console.error(err);
+  }
 
   let micStream;
 
@@ -30,7 +34,8 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
   } catch (err) {
     console.log(err);
   }
-
+  
+  const output = new MediaStream();
   output.addTrack(destination.stream.getAudioTracks()[0]);
   output.addTrack(stream.getVideoTracks()[0]);
 
@@ -43,10 +48,15 @@ export async function recordTab(streamId: string): Promise<MediaRecorder> {
     if (micStream) {
       micStream.getTracks().forEach((track) => track.stop());
     }
+
   };
 
   stream.getVideoTracks()[0].onended = () => {
     recorder.stop();
+    
+    if (onStop) {
+      onStop();
+    }
   };
 
   return recorder;
