@@ -19,7 +19,4 @@ export enum RTMessages {
   UnblockZoom,
   BlockZoom,
   CaptureDesktop,
-  
-  // Proxy
-  SetProxy,
 }

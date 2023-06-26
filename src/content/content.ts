@@ -3,30 +3,35 @@ import { RTMessages } from '@/utils/enums/RTMessages';
 import { recordTab } from '@/utils/helpers/record';
 import { observeDomMutations } from './observer';
 import { bufferToBase64 } from '@/utils/helpers/convert';
+import { StatusCode } from '@/utils/enums/StatusCodes';
+import { REGX_ZOOM_MEETING } from '@/utils/constants/regx';
 
 let recorder: MediaRecorder;
 
 observeDomMutations();
 
-window.addEventListener(CustomEvents.WebSocketSniffer, (event: CustomEvent) => {
+// forward websocket events from socketSniffer to service worker
+window.addEventListener(CustomEvents.WsData, (event: CustomEvent) => {
   if (event.detail?.type) {
     chrome.runtime.sendMessage(event.detail);
   }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (location.href.includes('.zoom.us/wc/')) {
+  if (REGX_ZOOM_MEETING.test(location.href)) {
     document.body.style.display = 'none';
 
     const res = await chrome.runtime.sendMessage({ type: RTMessages.CaptureDesktop });
 
-    if (res === 'ok') {
+    if (res === StatusCode.Ok) {
+      // when user enabled capturing with check of system audio, permit to start the meeting
       document.body.style.display = 'block';
     } else {
-      const res = await chrome.runtime.sendMessage({ type: RTMessages.BlockZoom });
-      if (res === 'ok') {
-        location.reload();
-      }
+      // disable websocket to prevent attending meeting without permission
+      window.dispatchEvent(new CustomEvent(CustomEvents.WsDisable));
+
+      alert(res);
+      location.reload();
     }
   }
 });

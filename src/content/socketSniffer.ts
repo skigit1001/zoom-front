@@ -3,11 +3,15 @@ import { RTMessages } from '@/utils/enums/RTMessages';
 
 function initSocketSniffer() {
   const logWebSocketTraffic = (type: RTMessages, data: any) => {
-    const event = new CustomEvent(CustomEvents.WebSocketSniffer, {
+    const event = new CustomEvent(CustomEvents.WsData, {
       detail: { type, data },
     });
     window.dispatchEvent(event);
   };
+
+  window.addEventListener(CustomEvents.WsDisable, () => {
+    OrigWebSocket.prototype.send = () => void 0;
+  });
 
   const OrigWebSocket = window.WebSocket;
   const callWebSocket = OrigWebSocket.apply.bind(OrigWebSocket);

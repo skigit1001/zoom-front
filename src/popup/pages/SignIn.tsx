@@ -49,8 +49,6 @@ export default function SignIn() {
         [StorageItems.ProxyPassword]: 'guest',
       });
 
-      chrome.runtime.sendMessage({ type: RTMessages.SetProxy });
-
       baseApi.defaults.headers.common[AUTH_HEADER] = data.token;
       
       setTimeout(() => navigate(PopupPages.home));

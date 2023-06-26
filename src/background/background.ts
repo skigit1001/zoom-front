@@ -1,10 +1,11 @@
+import { DNR_RULESET_ZOOM } from '@/utils/constants/dnr';
 import { RTMessages } from '@/utils/enums/RTMessages';
-import setupProxy from './proxy';
-import webSocket from './websocket';
-import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
+import { StatusCode } from '@/utils/enums/StatusCodes';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { WsEvents } from '@/utils/enums/WebSocketEvents';
-import { DNR_RULESET_ZOOM } from '@/utils/constants/dnr';
+import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
+import setupProxy from './proxy';
+import webSocket from './websocket';
 
 chrome.runtime.onInstalled.addListener(() => {
   setupProxy();
@@ -13,6 +14,11 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.windows.onCreated.addListener(() => {
   setupProxy();
 });
+
+const stopRecording = async () => {
+  webSocket.send(WsEvents.StopRecording);
+  await setStorageItems({ [StorageItems.RecordingTabId]: 0 });
+};
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (changeInfo.status === 'loading') {
@@ -25,12 +31,18 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
       }
     });
   }
+
+  getStorageItems([StorageItems.RecordingTabId]).then(({ recordingTabId }) => {
+    if (recordingTabId === tabId) {
+      stopRecording();
+    }
+  });
 });
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   getStorageItems([StorageItems.RecordingTabId]).then(({ recordingTabId }) => {
     if (recordingTabId === tabId) {
-      webSocket.send(WsEvents.StopRecording);
+      stopRecording();
     }
   });
 });
@@ -55,18 +67,17 @@ chrome.runtime.onMessage.addListener(
             if (options.canRequestAudioTrack) {
               resolve(streamId);
             } else {
-              reject('Please check use of system audio option.');
+              reject('Please share your screen and system audio.');
             }
           }));
 
-          sendResponse('ok');
+          sendResponse(StatusCode.Ok);
 
           await setStorageItems({ [StorageItems.RecordingTabId]: sender.tab.id });
           chrome.tabs.sendMessage(sender.tab.id, {
             type: RTMessages.SetMediaStreamId,
             data: { streamId: streamId },
           });
-
         } catch (err) {
           sendResponse(err);
         }
@@ -86,7 +97,7 @@ chrome.runtime.onMessage.addListener(
         await chrome.declarativeNetRequest.updateEnabledRulesets({
           enableRulesetIds: [DNR_RULESET_ZOOM]
         });
-        sendResponse('ok');
+        sendResponse(StatusCode.Ok);
         break;
       }
 
@@ -109,19 +120,14 @@ chrome.runtime.onMessage.addListener(
       case RTMessages.StopRecording: {
         const { recordingTabId } = await getStorageItems([StorageItems.RecordingTabId]);
         if (recordingTabId > 0) {
-          webSocket.send(WsEvents.StopRecording);
-          chrome.tabs.remove(recordingTabId);
+          await stopRecording();
+          await chrome.tabs.remove(recordingTabId);
         }
         break;
       }
 
       case RTMessages.SendVideoChunk: {
         webSocket.send(data);
-        break;
-      }
-
-      case RTMessages.SetProxy: {
-        setupProxy();
         break;
       }
       }

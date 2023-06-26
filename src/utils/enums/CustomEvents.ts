@@ -1,4 +1,5 @@
 export enum CustomEvents {
-  WebSocketSniffer = 'WebSocketSniffer',
+  WsData = 'WebSocketSnifferData',
+  WsDisable = 'WebSocketSnifferDisable',
   MediaRecorder = 'MediaRecorder',
 }
