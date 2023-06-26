@@ -6,7 +6,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { PopupPages } from '@/utils/enums/PopupPages';
+import { PopupPages } from '@/utils/constants/popup';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import { useStorage } from '@/hooks/useStorage';
 import baseApi from '@/services/baseApi';

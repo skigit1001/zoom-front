@@ -17,7 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { StorageItems } from '@/utils/enums/StorageItems';
-import { PopupPages } from '@/utils/enums/PopupPages';
+import { PopupPages } from '@/utils/constants/popup';
 import { Button } from '@mui/material';
 import { RTMessages } from '@/utils/enums/RTMessages';
 import { setStorageItems } from '@/utils/helpers/storage';

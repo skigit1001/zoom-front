@@ -1,7 +1,7 @@
 import { RouteObject, createMemoryRouter, redirect } from 'react-router-dom';
 
 import baseApi from '@/services/baseApi';
-import { PopupPages } from '@/utils/enums/PopupPages';
+import { POPUP_PATH } from '@/utils/constants/popup';
 
 import App from './App';
 import ForgotPassword from './pages/ForgotPassword';
@@ -20,8 +20,8 @@ const routes: RouteObject[] = [
       const url = new URL(request.url);
 
       if (!baseApi.defaults.baseURL) {
-        if (url.pathname !== PopupPages.serverInfo) {
-          return redirect(PopupPages.serverInfo);
+        if (url.pathname !== POPUP_PATH.serverInfo) {
+          return redirect(POPUP_PATH.serverInfo);
         }
         return true;
       }
@@ -29,25 +29,25 @@ const routes: RouteObject[] = [
       if (baseApi.defaults.headers.common[AUTH_HEADER]) {
         return true;
       } else {
-        if (url.pathname !== PopupPages.signIn) {
-          return redirect(PopupPages.signIn);
+        if (url.pathname !== POPUP_PATH.signIn) {
+          return redirect(POPUP_PATH.signIn);
         }
         return true;
       }
     },
     children: [
-      { path: PopupPages.home, Component: Home },
-      { path: PopupPages.serverInfo, Component: ServerInfo },
-      { path: PopupPages.signIn, Component: SignIn },
-      { path: PopupPages.signUp, Component: SignUp },
-      { path: PopupPages.forgotPassword, Component: ForgotPassword },
-      { path: PopupPages.loading, Component: Loading },
+      { path: POPUP_PATH.home, Component: Home },
+      { path: POPUP_PATH.serverInfo, Component: ServerInfo },
+      { path: POPUP_PATH.signIn, Component: SignIn },
+      { path: POPUP_PATH.signUp, Component: SignUp },
+      { path: POPUP_PATH.forgotPassword, Component: ForgotPassword },
+      { path: POPUP_PATH.loading, Component: Loading },
     ],
   },
 ];
 
 const router = createMemoryRouter(routes, {
-  initialEntries: [PopupPages.home],
+  initialEntries: [POPUP_PATH.home],
 });
 
 export default router;

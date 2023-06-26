@@ -8,10 +8,9 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { PopupPages } from '@/utils/enums/PopupPages';
+import { PopupPages } from '@/utils/constants/popup';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import baseApi from '@/services/baseApi';
-import { RTMessages } from '@/utils/enums/RTMessages';
 import { setStorageItems } from '@/utils/helpers/storage';
 import { AUTH_HEADER } from '@/config';
 
