@@ -130,6 +130,10 @@ chrome.runtime.onMessage.addListener(
         webSocket.send(data);
         break;
       }
+
+      default:
+        sendResponse(StatusCode.Unknown);
+        break;
       }
     })();
 
