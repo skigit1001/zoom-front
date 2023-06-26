@@ -5,7 +5,7 @@ export async function recordTab(streamId: string, onStop = () => void 0): Promis
         chromeMediaSource: 'desktop',
         chromeMediaSourceId: streamId,
       },
-    }  as MediaTrackConstraints,
+    } as MediaTrackConstraints,
     video: {
       mandatory: {
         chromeMediaSource: 'desktop',
@@ -34,7 +34,7 @@ export async function recordTab(streamId: string, onStop = () => void 0): Promis
   } catch (err) {
     console.log(err);
   }
-  
+
   const output = new MediaStream();
   output.addTrack(destination.stream.getAudioTracks()[0]);
   output.addTrack(stream.getVideoTracks()[0]);
@@ -43,20 +43,13 @@ export async function recordTab(streamId: string, onStop = () => void 0): Promis
     mimeType: 'video/webm;codecs=vp8,vp9,opus',
   });
 
-  recorder.onstop = () => {
+  stream.getVideoTracks()[0].onended = () => {
     stream.getTracks().forEach((track) => track.stop());
     if (micStream) {
       micStream.getTracks().forEach((track) => track.stop());
     }
-
-  };
-
-  stream.getVideoTracks()[0].onended = () => {
     recorder.stop();
-    
-    if (onStop) {
-      onStop();
-    }
+    onStop();
   };
 
   return recorder;
