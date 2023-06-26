@@ -6,10 +6,10 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { PopupPages } from '@/utils/constants/popup';
+import { POPUP_PATH } from '@/utils/constants/popup';
 import { StorageItems } from '@/utils/enums/StorageItems';
-import { useStorage } from '@/hooks/useStorage';
 import baseApi from '@/services/baseApi';
+import { setStorageItems } from '@/utils/helpers/storage';
 
 enum SignUpItems {
   Username = 'name',
@@ -20,8 +20,6 @@ enum SignUpItems {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [, setAuthToken] = useStorage(StorageItems.AuthToken);
-  const [, setUserInfo] = useStorage(StorageItems.UserInfo);
 
   const [formData, setFormData] = React.useState({
     [SignUpItems.Username]: '',
@@ -43,9 +41,11 @@ export default function SignUp() {
   const handleSubmit = React.useCallback(async () => {
     try {
       const { data } = await baseApi.post('/auth/signup', formData);
-      setAuthToken(data.token);
-      setUserInfo(data.user);
-      setTimeout(() => navigate(PopupPages.home));
+      await setStorageItems({
+        [StorageItems.AuthToken]: data.token,
+        [StorageItems.UserInfo]: data.user
+      });
+      setTimeout(() => navigate(POPUP_PATH.home));
     } catch (err) {
       console.error(err);
     }
@@ -118,7 +118,7 @@ export default function SignUp() {
             <Link
               href="#"
               variant="body2"
-              onClick={() => navigate(PopupPages.signIn)}
+              onClick={() => navigate(POPUP_PATH.signIn)}
             >
               Already have an account? Sign in
             </Link>
@@ -127,7 +127,7 @@ export default function SignUp() {
             <Link
               href="#"
               variant="body2"
-              onClick={() => navigate(PopupPages.serverInfo)}
+              onClick={() => navigate(POPUP_PATH.serverInfo)}
             >
               Server info should be updated?
             </Link>

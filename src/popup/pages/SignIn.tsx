@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { PopupPages } from '@/utils/constants/popup';
+import { POPUP_PATH } from '@/utils/constants/popup';
 import { StorageItems } from '@/utils/enums/StorageItems';
 import baseApi from '@/services/baseApi';
 import { setStorageItems } from '@/utils/helpers/storage';
@@ -50,7 +50,7 @@ export default function SignIn() {
 
       baseApi.defaults.headers.common[AUTH_HEADER] = data.token;
       
-      setTimeout(() => navigate(PopupPages.home));
+      setTimeout(() => navigate(POPUP_PATH.home));
     } catch (err) {
       console.error(err);
     }
@@ -115,7 +115,7 @@ export default function SignIn() {
             <Link
               href="#"
               variant="body2"
-              onClick={() => navigate(PopupPages.forgotPassword)}
+              onClick={() => navigate(POPUP_PATH.forgotPassword)}
             >
               Forgot password?
             </Link>
@@ -124,7 +124,7 @@ export default function SignIn() {
             <Link
               href="#"
               variant="body2"
-              onClick={() => navigate(PopupPages.signUp)}
+              onClick={() => navigate(POPUP_PATH.signUp)}
             >
               {'Don\'t have an account? Sign Up'}
             </Link>
@@ -133,7 +133,7 @@ export default function SignIn() {
             <Link
               href="#"
               variant="body2"
-              onClick={() => navigate(PopupPages.serverInfo)}
+              onClick={() => navigate(POPUP_PATH.serverInfo)}
             >
               Server info should be updated?
             </Link>

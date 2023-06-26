@@ -17,7 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { StorageItems } from '@/utils/enums/StorageItems';
-import { PopupPages } from '@/utils/constants/popup';
+import { POPUP_PATH } from '@/utils/constants/popup';
 import { Button } from '@mui/material';
 import { RTMessages } from '@/utils/enums/RTMessages';
 import { setStorageItems } from '@/utils/helpers/storage';
@@ -52,7 +52,7 @@ export default function PersistentDrawerRight() {
       [StorageItems.ProxyUsername]: '',
       [StorageItems.ProxyPassword]: ''
     });
-    navigate(PopupPages.signIn);
+    navigate(POPUP_PATH.signIn);
   };
 
   const handleStartRecording = async () => {

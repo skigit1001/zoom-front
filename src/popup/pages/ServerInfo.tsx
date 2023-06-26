@@ -5,16 +5,17 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { PopupPages } from '@/utils/constants/popup';
+import { POPUP_PATH } from '@/utils/constants/popup';
 import { StorageItems } from '@/utils/enums/StorageItems';
-import { useStorage } from '@/hooks/useStorage';
+import { getStorageItems, setStorageItems } from '@/utils/helpers/storage';
 
 export default function ServerInfo() {
   const navigate = useNavigate();
-  const [serverAddr, setServerAddr] = useStorage(StorageItems.ServerAddr, '');
-  const [addr, setAddr] = useState(serverAddr);
+  const [addr, setAddr] = useState('');
 
-  useEffect(() => setAddr(serverAddr), [serverAddr]);
+  useEffect(() => {
+    getStorageItems().then(items => setAddr(items.serverAddr));
+  }, []);
 
   const handleChangeServerAddr = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +25,7 @@ export default function ServerInfo() {
   );
 
   const handleSaveServerInfo = useCallback(() => {
-    setServerAddr(addr);
+    setStorageItems({ [StorageItems.ServerAddr]: addr });
   }, [addr]);
 
   return (
@@ -70,7 +71,7 @@ export default function ServerInfo() {
         <Link
           href="#"
           variant="body2"
-          onClick={() => navigate(PopupPages.signIn)}
+          onClick={() => navigate(POPUP_PATH.signIn)}
         >
           Already have a correct info? Sign in
         </Link>
