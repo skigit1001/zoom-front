@@ -5,8 +5,16 @@ import { observeDomMutations } from './observer';
 import { bufferToBase64 } from '@/utils/helpers/convert';
 import { StatusCode } from '@/utils/enums/StatusCodes';
 import { REGX_ZOOM_MEETING } from '@/utils/constants/regx';
+import { emitNativeCustomEvent } from '@/utils/helpers/event';
 
+/**
+ * Observe DOM Mutations to detect changes in UI of target page
+ * 
+ * For example, new chat message will make a new text node in dom tree of chatbox
+ * and this change is included in this mutation for sure.
+ */
 observeDomMutations();
+
 
 // forward websocket events from socketSniffer to service worker
 window.addEventListener(CustomEvents.WsData, (event: CustomEvent) => {
@@ -16,6 +24,7 @@ window.addEventListener(CustomEvents.WsData, (event: CustomEvent) => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // validate permission when current url is for alive meeting
   if (REGX_ZOOM_MEETING.test(location.href)) {
     document.body.style.display = 'none';
 
@@ -26,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.style.display = 'block';
     } else {
       // disable websocket to prevent attending meeting without permission
-      window.dispatchEvent(new CustomEvent(CustomEvents.WsDisable));
+      emitNativeCustomEvent(CustomEvents.WsDisable);
 
       alert(res);
       location.reload();
@@ -35,21 +44,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-chrome.runtime.onMessage.addListener(async ({ type, data }) => {
-  if (type === RTMessages.SetMediaStreamId) {
-    const recorder = await recordTab(data.streamId, () => {
-      chrome.runtime.sendMessage({ type: RTMessages.StopRecording });
-    });
-    recorder.ondataavailable = async (event) => {
-      if (event.data && event.data.size > 0) {
-        const buffer = await event.data.arrayBuffer();
-        chrome.runtime.sendMessage({
-          type: RTMessages.SendVideoChunk,
-          data: bufferToBase64(buffer),
-        });
-      }
-    };
-    await chrome.runtime.sendMessage({ type: RTMessages.StartRecording });
-    recorder.start(1000);
-  }
+chrome.runtime.onMessage.addListener(({ type, data }) => {
+  (async () => {
+    if (type === RTMessages.SetMediaStreamId) {
+      const recorder = await recordTab(data.streamId, () => {
+        chrome.runtime.sendMessage({ type: RTMessages.StopRecording });
+      });
+      recorder.ondataavailable = async (event) => {
+        if (event.data && event.data.size > 0) {
+          const buffer = await event.data.arrayBuffer();
+          chrome.runtime.sendMessage({
+            type: RTMessages.SendVideoChunk,
+            data: bufferToBase64(buffer),
+          });
+        }
+      };
+      await chrome.runtime.sendMessage({ type: RTMessages.StartRecording });
+      recorder.start(1000);
+    }
+  })();
+
+  // for asynchronous response
+  return true;
 });
