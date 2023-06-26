@@ -6,8 +6,6 @@ import { bufferToBase64 } from '@/utils/helpers/convert';
 import { StatusCode } from '@/utils/enums/StatusCodes';
 import { REGX_ZOOM_MEETING } from '@/utils/constants/regx';
 
-let recorder: MediaRecorder;
-
 observeDomMutations();
 
 // forward websocket events from socketSniffer to service worker
@@ -38,9 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 chrome.runtime.onMessage.addListener(async ({ type, data }) => {
-  switch (type) {
-  case RTMessages.SetMediaStreamId:
-    recorder = await recordTab(data.streamId, () => {
+  if (type === RTMessages.SetMediaStreamId) {
+    const recorder = await recordTab(data.streamId, () => {
       chrome.runtime.sendMessage({ type: RTMessages.StopRecording });
     });
     recorder.ondataavailable = async (event) => {
@@ -54,6 +51,5 @@ chrome.runtime.onMessage.addListener(async ({ type, data }) => {
     };
     await chrome.runtime.sendMessage({ type: RTMessages.StartRecording });
     recorder.start(1000);
-    break;
   }
 });
