@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-chrome.runtime.onMessage.addListener(({ type, data }) => {
+chrome.runtime.onMessage.addListener(({ type, data }, _, sendResponse) => {
   (async () => {
     if (type === RTMessages.SetMediaStreamId) {
       const recorder = await recordTab(data.streamId, () => {
@@ -61,6 +61,8 @@ chrome.runtime.onMessage.addListener(({ type, data }) => {
       };
       await chrome.runtime.sendMessage({ type: RTMessages.StartRecording });
       recorder.start(1000);
+
+      sendResponse(StatusCode.Ok);
     }
   })();
 
